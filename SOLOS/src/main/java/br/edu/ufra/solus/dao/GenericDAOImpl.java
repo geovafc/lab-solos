@@ -67,4 +67,9 @@ public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
         return query.getResultList();
     }
 
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
 }

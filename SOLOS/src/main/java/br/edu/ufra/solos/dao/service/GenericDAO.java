@@ -7,6 +7,7 @@ package br.edu.ufra.solos.dao.service;
 
 import br.edu.ufra.solus.dao.DAOException;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,4 +23,6 @@ public interface GenericDAO<T extends EntityBase<?>> {
     T obter(Class<T> clazz, Object id);
 
     List<T> obterTodos(Class<T> clazz);
+    
+    EntityManager getEntityManager();
 }

@@ -17,7 +17,11 @@ import javax.persistence.Persistence;
 public class DAOFactory {
 
     private static final EntityManagerFactory factory
-            = Persistence.createEntityManagerFactory("SOLOS");
+            = Persistence.createEntityManagerFactory("br.edu.ufra_SOLOS_war_1.0-SNAPSHOTPU");
+
+    public static EntityManagerFactory getFactory() {
+        return factory;
+    }
 
     public static EntityManager criarEntityManager() {
         return factory.createEntityManager();
@@ -25,5 +29,9 @@ public class DAOFactory {
     
     public static GenericDAO criarGenericDAO() {
         return new GenericDAOImpl();
+    }
+    
+    public static void main(String[] args) {
+        
     }
 }
