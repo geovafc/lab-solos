@@ -1,0 +1,154 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+DROP SCHEMA IF EXISTS `solos` ;
+CREATE SCHEMA IF NOT EXISTS `solos` DEFAULT CHARACTER SET utf8 ;
+USE `solos` ;
+
+-- -----------------------------------------------------
+-- Table `solos`.`proprietario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`proprietario` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`proprietario` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `municipio` VARCHAR(45) NOT NULL,
+  `estado` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NULL,
+  `telefone` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`local`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`local` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`local` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `area` VARCHAR(20) NULL,
+  `relevo` VARCHAR(20) NULL,
+  `posicao_do_relevo` VARCHAR(20) NULL,
+  `tipo_de_cobertura` VARCHAR(20) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`usuario` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`usuario` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `login` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(255) NOT NULL,
+  `perfil` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`solicitacao`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`solicitacao` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`solicitacao` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `usuario` INT NOT NULL,
+  `proprietario` INT NOT NULL,
+  `data_de_entrada` TIMESTAMP NULL,
+  `data_de_saida` TIMESTAMP NULL,
+  `procedencia_do_material` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_solicitacao_usuario2_idx` (`usuario` ASC),
+  INDEX `fk_solicitacao_proprietario1_idx` (`proprietario` ASC),
+  CONSTRAINT `fk_solicitacao_usuario2`
+    FOREIGN KEY (`usuario`)
+    REFERENCES `solos`.`usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_solicitacao_proprietario1`
+    FOREIGN KEY (`proprietario`)
+    REFERENCES `solos`.`proprietario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`amostra`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`amostra` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`amostra` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `solicitacao` INT NOT NULL,
+  `local` INT NOT NULL,
+  `codigo` VARCHAR(20) NULL,
+  `tipo` VARCHAR(10) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_amostra_local1_idx` (`local` ASC),
+  INDEX `fk_amostra_solicitacao1_idx` (`solicitacao` ASC),
+  CONSTRAINT `fk_amostra_local1`
+    FOREIGN KEY (`local`)
+    REFERENCES `solos`.`local` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_amostra_solicitacao1`
+    FOREIGN KEY (`solicitacao`)
+    REFERENCES `solos`.`solicitacao` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`analise`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`analise` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`analise` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `tipo` VARCHAR(10) NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `preco` DECIMAL(8,2) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`faturamento`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`faturamento` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`faturamento` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `amostra` INT NOT NULL,
+  `analise` INT NOT NULL,
+  `preco` DECIMAL(8,2) NOT NULL,
+  `tipo_de_desconto` CHAR NULL,
+  `valor_de_desconto` DECIMAL(8,2) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_faturamento_amostra2_idx` (`amostra` ASC),
+  INDEX `fk_faturamento_analise2_idx` (`analise` ASC),
+  CONSTRAINT `fk_faturamento_amostra2`
+    FOREIGN KEY (`amostra`)
+    REFERENCES `solos`.`amostra` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_faturamento_analise2`
+    FOREIGN KEY (`analise`)
+    REFERENCES `solos`.`analise` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
