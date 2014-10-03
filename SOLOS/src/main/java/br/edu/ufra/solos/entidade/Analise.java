@@ -6,7 +6,6 @@
 package br.edu.ufra.solos.entidade;
 
 import br.edu.ufra.solos.dao.service.EntityBase;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
@@ -20,8 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -46,18 +43,13 @@ public class Analise implements EntityBase<Integer> {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "tipo")
+    @Column(name = "tipo", length = 10)
     private String tipo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "nome")
+    @Column(name = "nome", length = 45)
     private String nome;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
     @Column(name = "preco")
     private BigDecimal preco;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analise")

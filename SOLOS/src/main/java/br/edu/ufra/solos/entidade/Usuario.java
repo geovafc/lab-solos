@@ -6,7 +6,6 @@
 package br.edu.ufra.solos.entidade;
 
 import br.edu.ufra.solos.dao.service.EntityBase;
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -46,24 +43,16 @@ public class Usuario implements EntityBase<Integer> {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "nome")
+    @Column(name = "nome", length = 45)
     private String nome;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "login")
+    @Column(name = "login", length = 45)
     private String login;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "senha")
+    @Column(name = "senha", length = 255)
     private String senha;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "perfil")
+    @Column(name = "perfil", length = 20)
     private String perfil;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Solicitacao> solicitacaoList;
