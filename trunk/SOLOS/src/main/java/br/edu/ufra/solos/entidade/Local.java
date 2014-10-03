@@ -6,7 +6,6 @@
 package br.edu.ufra.solos.entidade;
 
 import br.edu.ufra.solos.dao.service.EntityBase;
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,17 +42,13 @@ public class Local implements EntityBase<Integer> {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 20)
-    @Column(name = "area")
+    @Column(name = "area", length = 20)
     private String area;
-    @Size(max = 20)
-    @Column(name = "relevo")
+    @Column(name = "relevo", length = 20)
     private String relevo;
-    @Size(max = 20)
-    @Column(name = "posicao_do_relevo")
+    @Column(name = "posicao_do_relevo", length = 20)
     private String posicaoDoRelevo;
-    @Size(max = 20)
-    @Column(name = "tipo_de_cobertura")
+    @Column(name = "tipo_de_cobertura", length = 20)
     private String tipoDeCobertura;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "local")
     private List<Amostra> amostraList;

@@ -6,7 +6,6 @@
 package br.edu.ufra.solos.entidade;
 
 import br.edu.ufra.solos.dao.service.EntityBase;
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -21,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,11 +42,9 @@ public class Amostra implements EntityBase<Integer> {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 20)
-    @Column(name = "codigo")
+    @Column(name = "codigo", length = 20)
     private String codigo;
-    @Size(max = 10)
-    @Column(name = "tipo")
+    @Column(name = "tipo", length = 20)
     private String tipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "amostra")
     private List<Faturamento> faturamentoList;

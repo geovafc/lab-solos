@@ -37,7 +37,7 @@ public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
             if (tx.isActive()) {
                 tx.rollback();
             }
-            throw new DAOException();
+            throw new DAOException(e);
         }
     }
 
@@ -52,7 +52,7 @@ public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
             if (tx.isActive()) {
                 tx.rollback();
             }
-            throw new DAOException();
+            throw new DAOException(e);
         }
     }
 
@@ -63,7 +63,8 @@ public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
 
     @Override
     public List<T> obterTodos(Class<T> clazz) {
-        TypedQuery<T> query = em.createQuery(clazz.getSimpleName() + ".findAll", clazz);
+        TypedQuery<T> query = em.createNamedQuery(clazz.getSimpleName() + ".findAll", clazz);
+        System.out.println(clazz.getSimpleName() + ".findAll");
         return query.getResultList();
     }
 
