@@ -15,9 +15,30 @@
             <from-outcome>lista_proprietario</from-outcome>
         </navigation-case>
         
+      
         <navigation-case>
             <to-view-id>/privado/proprietario/form_proprietario.xhtml</to-view-id>
             <from-outcome>form_proprietario</from-outcome>
+        </navigation-case>
+        
+          <navigation-case>
+            <to-view-id>/privado/secretaria/analise/lista_analise.xhtml</to-view-id>
+            <from-outcome>lista_analise</from-outcome>
+        </navigation-case>
+        
+          <navigation-case>
+            <to-view-id>/privado/secretaria/analise/form_analise.xhtml</to-view-id>
+            <from-outcome>form_analise</from-outcome>
+        </navigation-case>
+        
+          <navigation-case>
+            <to-view-id>/privado/secretaria/usuario/lista_usuario.xhtml</to-view-id>
+            <from-outcome>lista_usuario</from-outcome>
+        </navigation-case>
+        
+          <navigation-case>
+            <to-view-id>/privado/secretaria/usuario/form_usuario.xhtml</to-view-id>
+            <from-outcome>form_usuario</from-outcome>
         </navigation-case>
     </navigation-rule>
 </faces-config>
