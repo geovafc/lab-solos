@@ -5,7 +5,6 @@
  */
 package br.edu.ufra.solos.entidade;
 
-import br.edu.ufra.solos.dao.service.EntityBase;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;

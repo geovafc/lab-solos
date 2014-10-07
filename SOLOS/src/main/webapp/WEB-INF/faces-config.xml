@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <navigation-rule>
+        <navigation-case>
+            <to-view-id>/privado/index.xhtml</to-view-id>
+            <from-outcome>index</from-outcome>
+        </navigation-case>
+
+        <navigation-case>
+            <to-view-id>/privado/proprietario/lista_proprietario.xhtml</to-view-id>
+            <from-outcome>lista_proprietario</from-outcome>
+        </navigation-case>
+        
+        <navigation-case>
+            <to-view-id>/privado/proprietario/form_proprietario.xhtml</to-view-id>
+            <from-outcome>form_proprietario</from-outcome>
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

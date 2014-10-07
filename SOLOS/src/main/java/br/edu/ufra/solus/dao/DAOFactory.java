@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ufra.solos.dao.service;
+package br.edu.ufra.solus.dao;
 
+import br.edu.ufra.solos.dao.service.GenericDAO;
 import br.edu.ufra.solus.dao.GenericDAOImpl;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,7 +32,4 @@ public class DAOFactory {
         return new GenericDAOImpl();
     }
     
-    public static void main(String[] args) {
-        
-    }
 }

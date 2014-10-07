@@ -5,7 +5,6 @@
  */
 package br.edu.ufra.solus.dao;
 
-import br.edu.ufra.solos.dao.service.DAOFactory;
 import br.edu.ufra.solos.dao.service.GenericDAO;
 import br.edu.ufra.solos.entidade.Usuario;
 import java.util.List;
