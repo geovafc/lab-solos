@@ -34,6 +34,14 @@ public class UsuarioBean implements Serializable{
              return null;
         }
     }
+    public void remover(){
+        try {
+            rn.remover(usuario);
+        } catch (DAOException ex) {
+             Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null,ex);
+            
+        }
+    }
 
     public List<Usuario> getUsuarios() {
         usuarios=rn.obterTodos();

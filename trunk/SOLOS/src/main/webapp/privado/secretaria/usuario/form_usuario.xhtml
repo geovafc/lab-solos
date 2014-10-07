@@ -7,38 +7,58 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/modelo/padrao.xhtml">
         <ui:define name="conteudo">
+             <p:growl id="mensagem" showDetail="true" />
             <p:panel id="panel" header="Cadastrar Usuário">
                 <h:form id="form_usuario">
-                    <h:inputHidden id="ih_id" value=""/>
-                    <h:panelGrid>
+                    <h:inputHidden id="ih_id" value="#{usuarioBean.usuario.id}"/>
+                    <h:panelGrid columns="3">
                         
 
-                        <span>Nome</span>
+                        <span>Nome:</span>
                         <p:inputText id="it_nome" 
-                                     value=""
+                                     value="#{usuarioBean.usuario.nome}"
                                      size="30"
                                      required="true"
                                      requiredMessage="Campo Obrigatório"
                                      />
                         <p:message id="msg_nome" for="it_nome" />
-                        <span>Login</span>
+                        
+                        <span>Login:</span>
                         <p:inputText id="it_login"
-                                     value=""
+                                     value="#{usuarioBean.usuario.login}"
                                      size="11"
                                      required="true"
                                      requiredMessage="Campo Obrigatório"
                                      />
-                        <p:message id="msg_preco" for="it_preco" />
+                        <p:message id="msg_login" for="it_login" />
+                        
+                        <span>Senha:</span>
+                        <p:inputText id="it_senha"
+                                     value="#{usuarioBean.usuario.senha}"
+                                     size="11"
+                                     required="true"
+                                     requiredMessage="Campo Obrigatório"
+                                     />
+                        <p:message id="msg_senha" for="it_senha" />
+                        
+                        <span>Perfil:</span>
+                        <p:inputText id="it_perfil"
+                                     value="#{usuarioBean.usuario.perfil}"
+                                     size="11"
+                                     required="true"
+                                     requiredMessage="Campo Obrigatório"
+                                     />
+                        <p:message id="msg_perfil" for="it_perfil" />
                     </h:panelGrid>
                     <p>
                         <p:commandButton id="cb_salvar"
                                          ajax="false"
                                          value="Salvar"
-                                         action=""
+                                         action="#{usuarioBean.salvar()}"
                                          />
                         <p:button id="bt_cancelar" 
                                   value="Cancelar"
-                                  outcome=""
+                                  outcome="lista_usuario"
                                   />
                     </p>
                 </h:form>   
