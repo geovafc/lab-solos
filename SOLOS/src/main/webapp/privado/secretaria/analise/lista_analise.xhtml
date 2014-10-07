@@ -7,42 +7,63 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/modelo/padrao.xhtml">
         <ui:define name="conteudo">
-            <p:panel id="panel"
-                     header="Listagem de Análises"
-                     >
+
+            <p:growl id="mensagem" showDetail="true"/>
+
+            <p:panel id="panel" header="Listagem de Análises">
+
                 <p>
-                    <p:button id="bt_inserir"  />
+                    <p:button id="bt_inserir" value="Inserir" outcome="form_analise"/>
                 </p>
-                <h:form id="form_analise" >
-                    <p:dataTable id="dt_proprietario"
+
+                <h:form id="form_analise">
+                    <p:dataTable id="dt_analise"
                                  value="#{analiseBean.analises}"
                                  var="analise"
+                                 style="width: 60%"
+                                 paginator="true"
                                  rows="10"
-                                 emptyMessage="sem registros"
-                                 >
-                        <p:column headerText="Tipo">
-                            <span>#{analise.tipo} </span>
-                        </p:column>
+                                 emptyMessage="sem registros">
+
                         <p:column headerText="Nome">
                             <span>#{analise.nome} </span>
                         </p:column>
-                        <p:column>
-                            <span>#{analise.preco}</span>
-                        </p:column>
-                        <p:column headerText="Editar">
-                            <p:commandButton id="cb_editar"
-                                             ajax="false"
-                                             icon="ui-icon-pencil"
-                                             action="form_analise"
-                                             >
-                                <f:setPropertyActionListener
-                                    value="#{analise}"
-                                    target="#{analiseBean.analise}"
-                                    />
-                            </p:commandButton>
 
+                        <p:column headerText="Preço" width="100">
+                            <h:outputText value="#{analise.preco}">
+                                <f:convertNumber type="currency"/>
+                            </h:outputText>
                         </p:column>
 
+                        <p:column headerText="Tipo" width="100">
+                            <span>#{analise.tipo}</span>
+                        </p:column>
+                        
+                        <p:column headerText="Editar" width="55">
+                            <center>
+                                <p:commandButton id="cb_editar"
+                                                 ajax="false"
+                                                 icon="ui-icon-pencil"
+                                                 action="form_analise">
+                                    <f:setPropertyActionListener
+                                        value="#{analise}"
+                                        target="#{analiseBean.analise}"/>
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Excluir" width="55">
+                            <center>
+                                <p:commandButton id="cb_excluir"
+                                                 icon="ui-icon-trash"
+                                                 action="#{analiseBean.remover()}"
+                                                 update="dt_analise, :mensagem">
+                                    <f:setPropertyActionListener
+                                        value="#{analise}"
+                                        target="#{analiseBean.analise}"/>
+                                </p:commandButton>
+                            </center>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
             </p:panel>

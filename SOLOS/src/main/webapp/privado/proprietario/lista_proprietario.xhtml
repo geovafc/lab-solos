@@ -7,14 +7,20 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/modelo/padrao.xhtml">
         <ui:define name="conteudo">
+            
+            <p:growl id="mensagem" showDetail="true"/>
+            
             <p:panel id="panel" header="Listagem de Proprietários">
+                
                 <p>
                     <p:button id="bt_inserir" value="Inserir" outcome="form_proprietario"/>
                 </p>
+                
                 <h:form id="form_proprietario">
                     <p:dataTable id="dt_proprietario"
                                  value="#{proprietarioBean.proprietarios}"
                                  var="proprietario"
+                                 paginator="true"
                                  rows="10"
                                  emptyMessage="sem registros">
                         <p:column headerText="Nome">
@@ -36,16 +42,31 @@
                         <p:column headerText="Telefone">
                             <span>#{proprietario.telefone}</span>
                         </p:column>
-                        
-                        <p:column headerText="Editar">
-                            <p:commandButton id="cb_editar"
-                                             ajax="false"
-                                             icon="ui-icon-pencil"
-                                             action="form_proprietario">
-                                <f:setPropertyActionListener
-                                    value="#{proprietario}"
-                                    target="#{proprietarioBean.proprietario}"/>
-                            </p:commandButton>
+
+                        <p:column headerText="Editar" width="55">
+                            <center>
+                                <p:commandButton id="cb_editar"
+                                                 ajax="false"
+                                                 icon="ui-icon-pencil"
+                                                 action="form_proprietario">
+                                    <f:setPropertyActionListener
+                                        value="#{proprietario}"
+                                        target="#{proprietarioBean.proprietario}"/>
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Excluir" width="55">
+                            <center>
+                                <p:commandButton id="cb_excluir"
+                                                 icon="ui-icon-trash"
+                                                 update="dt_proprietario, :mensagem"
+                                                 action="#{proprietarioBean.remover()}">
+                                    <f:setPropertyActionListener
+                                        value="#{proprietario}"
+                                        target="#{proprietarioBean.proprietario}"/>
+                                </p:commandButton>
+                            </center>
                         </p:column>
                     </p:dataTable>
                 </h:form>
