@@ -24,7 +24,7 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 public class ProprietarioBean implements Serializable {
 
-    private final GenericRN<Proprietario> rn = RNFactory.criarGenericRN();
+    private final GenericRN<Proprietario> rn = RNFactory.criarProprietarioRN();
     private List<Proprietario> proprietarios;
     private Proprietario proprietario = new Proprietario();
 

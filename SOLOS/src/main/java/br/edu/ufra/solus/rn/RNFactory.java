@@ -13,7 +13,13 @@ import br.edu.ufra.solus.rn.service.GenericRN;
  */
 public class RNFactory {
 
-    public static GenericRN criarGenericRN() {
+    public static GenericRN criarProprietarioRN() {
         return new ProprietarioRN();
+    }
+    public static GenericRN criarAnaliseRN() {
+        return new AnaliseRN();
+    }
+    public static GenericRN criarUsuarioRN() {
+        return new UsuarioRN();
     }
 }

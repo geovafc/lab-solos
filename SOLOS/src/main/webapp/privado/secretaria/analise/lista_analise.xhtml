@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/modelo/padrao.xhtml">
+        <ui:define name="conteudo">
+            <p:panel id="panel"
+                     header="Listagem de Análises"
+                     >
+                <p>
+                    <p:button id="bt_inserir"  />
+                </p>
+                <h:form id="form_analise" >
+                    <p:dataTable id="dt_proprietario"
+                                 value="#{analiseBean.analises}"
+                                 var="analise"
+                                 rows="10"
+                                 emptyMessage="sem registros"
+                                 >
+                        <p:column headerText="Tipo">
+                            <span>#{analise.tipo} </span>
+                        </p:column>
+                        <p:column headerText="Nome">
+                            <span>#{analise.nome} </span>
+                        </p:column>
+                        <p:column>
+                            <span>#{analise.preco}</span>
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:commandButton id="cb_editar"
+                                             ajax="false"
+                                             icon="ui-icon-pencil"
+                                             action="form_analise"
+                                             >
+                                <f:setPropertyActionListener
+                                    value="#{analise}"
+                                    target="#{analiseBean.analise}"
+                                    />
+                            </p:commandButton>
+
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
+
