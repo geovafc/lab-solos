@@ -5,7 +5,6 @@
  */
 package br.edu.ufra.solos.entidade;
 
-import br.edu.ufra.solos.dao.service.EntityBase;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;

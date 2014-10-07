@@ -5,8 +5,7 @@
  */
 package br.edu.ufra.solus.dao;
 
-import br.edu.ufra.solos.dao.service.DAOFactory;
-import br.edu.ufra.solos.dao.service.EntityBase;
+import br.edu.ufra.solos.entidade.EntityBase;
 import br.edu.ufra.solos.dao.service.GenericDAO;
 import java.util.List;
 import javax.persistence.EntityManager;

@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:form id="formMenu">
+        <p:menubar id="menubar">
+            <p:menuitem id="mi_home" value="Home" outcome="index"/>
+            <p:submenu id="sm_cadastrar" label="Cadastrar">
+                <p:menuitem id="mi_analise" value="Análise"/>
+                <p:menuitem id="mi_proprietario" value="Proprietário" outcome="lista_proprietario"/>
+            </p:submenu>
+            <p:menuitem id="mi_deposito" value="Depositar Amostra"/>
+        </p:menubar>
+    </h:form>
+    <br/>
+</ui:composition>

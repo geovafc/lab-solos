@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ufra.solos.dao.service;
+package br.edu.ufra.solus.rn;
 
-import java.io.Serializable;
+import br.edu.ufra.solus.rn.service.GenericRN;
 
 /**
  *
  * @author bpmlab
- * @param <T>
  */
-public interface EntityBase<T> extends Serializable {
+public class RNFactory {
 
-    T getId();
+    public static GenericRN criarGenericRN() {
+        return new ProprietarioRN();
+    }
 }
