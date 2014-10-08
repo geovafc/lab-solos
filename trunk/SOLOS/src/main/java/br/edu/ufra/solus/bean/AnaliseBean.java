@@ -40,9 +40,9 @@ public class AnaliseBean implements Serializable {
     public void remover() {
         try {
             rn.remover(analise);
-            JsfUtil.mensagem(FacesMessage.SEVERITY_INFO, "Salvo com sucesso!", "");
-        } catch (DAOException ex) {
             JsfUtil.mensagem(FacesMessage.SEVERITY_INFO, "Excluído com sucesso!", "");
+        } catch (DAOException ex) {
+            JsfUtil.mensagem(FacesMessage.SEVERITY_ERROR, "Ocorreu um erro inesperado!", "");
             LOG.log(Level.SEVERE, "Erro ao remover", ex);
         }
     }

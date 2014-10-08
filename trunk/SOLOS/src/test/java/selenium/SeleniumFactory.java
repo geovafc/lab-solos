@@ -14,9 +14,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  */
 public class SeleniumFactory {
     
-    private static final WebDriver driver = new FirefoxDriver();
+    public static final String PATH = "http://localhost:8084/SOLOS/faces";
+    private static WebDriver driver;
 
     public static WebDriver getDriver() {
+        if (driver == null) {
+            driver = new FirefoxDriver();
+            driver.manage().window().maximize();
+        }
         return driver;
     }
 }
