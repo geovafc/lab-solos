@@ -5,6 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -22,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -52,7 +55,9 @@ public class Solicitacao implements EntityBase<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataDeSaida;
     @Basic(optional = false)
-    @Column(name = "procedencia_do_material", length = 20)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "procedencia_do_material")
     private String procedenciaDoMaterial;
     @JoinColumn(name = "usuario", referencedColumnName = "id")
     @ManyToOne(optional = false)

@@ -14,6 +14,7 @@ import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import selenium.SeleniumFactory;
@@ -53,6 +54,7 @@ public class AnaliseExcluirTest {
     }
     
     @Test
+    @Ignore
     public void testExcluir() throws Exception {
         analise = new Analise(null, "Magnésio", "Solo", BigDecimal.TEN);
         dao.salvar(analise);
