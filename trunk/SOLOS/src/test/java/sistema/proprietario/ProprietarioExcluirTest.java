@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import selenium.SeleniumFactory;
 import selenium.caf.ProprietarioPO;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -52,6 +53,7 @@ public class ProprietarioExcluirTest {
     }
 
     @Test
+    @Ignore
     public void testExcluir() throws Exception {
         p = new Proprietario(null, "Mikael", "Barcarena", "PA", "(91)8888-6666");
         dao.salvar(p);

@@ -46,7 +46,7 @@ public class GenericDAOImplIT {
 
     @Test
     public void testSalvar() throws Exception {
-        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123", "ADM");
+        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123", 'A');
 
         dao.salvar(usuario);
 
@@ -61,7 +61,7 @@ public class GenericDAOImplIT {
 
     @Test
     public void testRemover() throws Exception {
-        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123", "ADM");
+        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123", 'A');
         dao.salvar(usuario);
         Integer id = usuario.getId();
 
@@ -73,9 +73,9 @@ public class GenericDAOImplIT {
 
     @Test
     public void testObterTodos() throws Exception {
-        Usuario u1 = new Usuario(null, "Mikael Lima", "mkmikael", "123", "ADM");
-        Usuario u2 = new Usuario(null, "Geovane Freitas", "geo", "123", "ADM");
-        Usuario u3 = new Usuario(null, "Lucas Toshiaki", "toto", "123", "ADM");
+        Usuario u1 = new Usuario(null, "Mikael Lima", "mkmikael", "123", 'A');
+        Usuario u2 = new Usuario(null, "Geovane Freitas", "geo", "123", 'A');
+        Usuario u3 = new Usuario(null, "Lucas Toshiaki", "toto", "123", 'A');
         dao.salvar(u1);
         dao.salvar(u2);
         dao.salvar(u3);

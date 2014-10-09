@@ -23,21 +23,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `solos`.`local`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `solos`.`local` ;
-
-CREATE TABLE IF NOT EXISTS `solos`.`local` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `area` VARCHAR(20) NULL,
-  `relevo` VARCHAR(20) NULL,
-  `posicao_do_relevo` VARCHAR(20) NULL,
-  `tipo_de_cobertura` VARCHAR(20) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `solos`.`usuario`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `solos`.`usuario` ;
@@ -47,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `solos`.`usuario` (
   `nome` VARCHAR(45) NOT NULL,
   `login` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(255) NOT NULL,
-  `perfil` VARCHAR(20) NOT NULL,
+  `perfil` CHAR NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -88,17 +73,14 @@ DROP TABLE IF EXISTS `solos`.`amostra` ;
 CREATE TABLE IF NOT EXISTS `solos`.`amostra` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `solicitacao` INT NOT NULL,
-  `local` INT NOT NULL,
   `codigo` VARCHAR(20) NULL,
-  `tipo` VARCHAR(10) NULL,
+  `tipo` VARCHAR(20) NULL,
+  `area` VARCHAR(45) NULL,
+  `relevo` VARCHAR(45) NULL,
+  `posicao_do_relevo` VARCHAR(45) NULL,
+  `tipo_de_cobertura` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_amostra_local1_idx` (`local` ASC),
   INDEX `fk_amostra_solicitacao1_idx` (`solicitacao` ASC),
-  CONSTRAINT `fk_amostra_local1`
-    FOREIGN KEY (`local`)
-    REFERENCES `solos`.`local` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_amostra_solicitacao1`
     FOREIGN KEY (`solicitacao`)
     REFERENCES `solos`.`solicitacao` (`id`)
@@ -114,7 +96,7 @@ DROP TABLE IF EXISTS `solos`.`analise` ;
 
 CREATE TABLE IF NOT EXISTS `solos`.`analise` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` VARCHAR(10) NOT NULL,
+  `tipo` VARCHAR(20) NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `preco` DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (`id`))

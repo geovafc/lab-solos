@@ -5,6 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,7 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Amostra.findAll", query = "SELECT a FROM Amostra a"),
     @NamedQuery(name = "Amostra.findById", query = "SELECT a FROM Amostra a WHERE a.id = :id"),
     @NamedQuery(name = "Amostra.findByCodigo", query = "SELECT a FROM Amostra a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo")})
+    @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo"),
+    @NamedQuery(name = "Amostra.findByArea", query = "SELECT a FROM Amostra a WHERE a.area = :area"),
+    @NamedQuery(name = "Amostra.findByRelevo", query = "SELECT a FROM Amostra a WHERE a.relevo = :relevo"),
+    @NamedQuery(name = "Amostra.findByPosicaoDoRelevo", query = "SELECT a FROM Amostra a WHERE a.posicaoDoRelevo = :posicaoDoRelevo"),
+    @NamedQuery(name = "Amostra.findByTipoDeCobertura", query = "SELECT a FROM Amostra a WHERE a.tipoDeCobertura = :tipoDeCobertura")})
 public class Amostra implements EntityBase<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,15 +47,26 @@ public class Amostra implements EntityBase<Integer> {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "codigo", length = 20)
+    @Size(max = 20)
+    @Column(name = "codigo")
     private String codigo;
-    @Column(name = "tipo", length = 20)
+    @Size(max = 20)
+    @Column(name = "tipo")
     private String tipo;
+    @Size(max = 45)
+    @Column(name = "area")
+    private String area;
+    @Size(max = 45)
+    @Column(name = "relevo")
+    private String relevo;
+    @Size(max = 45)
+    @Column(name = "posicao_do_relevo")
+    private String posicaoDoRelevo;
+    @Size(max = 45)
+    @Column(name = "tipo_de_cobertura")
+    private String tipoDeCobertura;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "amostra")
     private List<Faturamento> faturamentoList;
-    @JoinColumn(name = "local", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Local local;
     @JoinColumn(name = "solicitacao", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Solicitacao solicitacao;
@@ -85,6 +102,38 @@ public class Amostra implements EntityBase<Integer> {
         this.tipo = tipo;
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getRelevo() {
+        return relevo;
+    }
+
+    public void setRelevo(String relevo) {
+        this.relevo = relevo;
+    }
+
+    public String getPosicaoDoRelevo() {
+        return posicaoDoRelevo;
+    }
+
+    public void setPosicaoDoRelevo(String posicaoDoRelevo) {
+        this.posicaoDoRelevo = posicaoDoRelevo;
+    }
+
+    public String getTipoDeCobertura() {
+        return tipoDeCobertura;
+    }
+
+    public void setTipoDeCobertura(String tipoDeCobertura) {
+        this.tipoDeCobertura = tipoDeCobertura;
+    }
+
     @XmlTransient
     public List<Faturamento> getFaturamentoList() {
         return faturamentoList;
@@ -92,14 +141,6 @@ public class Amostra implements EntityBase<Integer> {
 
     public void setFaturamentoList(List<Faturamento> faturamentoList) {
         this.faturamentoList = faturamentoList;
-    }
-
-    public Local getLocal() {
-        return local;
-    }
-
-    public void setLocal(Local local) {
-        this.local = local;
     }
 
     public Solicitacao getSolicitacao() {

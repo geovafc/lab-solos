@@ -7,7 +7,6 @@ package br.edu.ufra.solus.rn;
 
 import br.edu.ufra.solos.dao.service.GenericDAO;
 import br.edu.ufra.solos.entidade.Analise;
-import br.edu.ufra.solos.entidade.Proprietario;
 import br.edu.ufra.solus.dao.DAOException;
 import br.edu.ufra.solus.dao.DAOFactory;
 import br.edu.ufra.solus.rn.service.GenericRN;

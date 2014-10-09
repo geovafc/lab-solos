@@ -40,5 +40,10 @@
             <to-view-id>/privado/secretaria/usuario/form_usuario.xhtml</to-view-id>
             <from-outcome>form_usuario</from-outcome>
         </navigation-case>
+        
+        <navigation-case>
+            <to-view-id>/privado/secretaria/solicitacao/form_solicitacao.xhtml</to-view-id>
+            <from-outcome>form_solicitacao</from-outcome>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

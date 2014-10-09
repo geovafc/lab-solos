@@ -5,6 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -42,17 +45,24 @@ public class Usuario implements EntityBase<Integer> {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "nome", length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "nome")
     private String nome;
     @Basic(optional = false)
-    @Column(name = "login", length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "login")
     private String login;
     @Basic(optional = false)
-    @Column(name = "senha", length = 255)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "senha")
     private String senha;
     @Basic(optional = false)
-    @Column(name = "perfil", length = 20)
-    private String perfil;
+    @NotNull
+    @Column(name = "perfil")
+    private Character perfil;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Solicitacao> solicitacaoList;
 
@@ -63,7 +73,7 @@ public class Usuario implements EntityBase<Integer> {
         this.id = id;
     }
 
-    public Usuario(Integer id, String nome, String login, String senha, String perfil) {
+    public Usuario(Integer id, String nome, String login, String senha, Character perfil) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -103,11 +113,11 @@ public class Usuario implements EntityBase<Integer> {
         this.senha = senha;
     }
 
-    public String getPerfil() {
+    public Character getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(String perfil) {
+    public void setPerfil(Character perfil) {
         this.perfil = perfil;
     }
 

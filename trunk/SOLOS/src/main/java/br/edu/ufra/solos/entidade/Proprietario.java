@@ -5,6 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,19 +46,28 @@ public class Proprietario implements EntityBase<Integer> {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "nome", length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "nome")
     private String nome;
     @Basic(optional = false)
-    @Column(name = "municipio", length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "municipio")
     private String municipio;
     @Basic(optional = false)
-    @Column(name = "estado", length = 2)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "estado")
     private String estado;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
-    @Column(name = "email", length = 45)
+    @Size(max = 45)
+    @Column(name = "email")
     private String email;
     @Basic(optional = false)
-    @Column(name = "telefone", length = 20)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "telefone")
     private String telefone;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proprietario")
     private List<Solicitacao> solicitacaoList;
