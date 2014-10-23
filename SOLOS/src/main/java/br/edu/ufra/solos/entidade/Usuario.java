@@ -33,36 +33,38 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
     @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome"),
-    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.login = :login"),
-    @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha"),
-    @NamedQuery(name = "Usuario.findByPerfil", query = "SELECT u FROM Usuario u WHERE u.perfil = :perfil")})
-public class Usuario implements EntityBase<Integer> {
+    @NamedQuery(name = "Usuario.findByPerfil", query = "SELECT u FROM Usuario u WHERE u.perfil = :perfil"),
+    @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha")})
+public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 80)
+    @Column(name = "email")
+    private String email;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 80)
     @Column(name = "nome")
     private String nome;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "login")
-    private String login;
+    @Size(min = 1, max = 20)
+    @Column(name = "perfil")
+    private String perfil;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "senha")
     private String senha;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "perfil")
-    private Character perfil;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Solicitacao> solicitacaoList;
 
@@ -73,12 +75,12 @@ public class Usuario implements EntityBase<Integer> {
         this.id = id;
     }
 
-    public Usuario(Integer id, String nome, String login, String senha, Character perfil) {
+    public Usuario(Integer id, String email, String nome, String perfil, String senha) {
         this.id = id;
+        this.email = email;
         this.nome = nome;
-        this.login = login;
-        this.senha = senha;
         this.perfil = perfil;
+        this.senha = senha;
     }
 
     public Integer getId() {
@@ -89,6 +91,14 @@ public class Usuario implements EntityBase<Integer> {
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -97,12 +107,12 @@ public class Usuario implements EntityBase<Integer> {
         this.nome = nome;
     }
 
-    public String getLogin() {
-        return login;
+    public String getPerfil() {
+        return perfil;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
     }
 
     public String getSenha() {
@@ -111,14 +121,6 @@ public class Usuario implements EntityBase<Integer> {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public Character getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(Character perfil) {
-        this.perfil = perfil;
     }
 
     @XmlTransient

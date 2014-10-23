@@ -34,21 +34,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Analise.findAll", query = "SELECT a FROM Analise a"),
     @NamedQuery(name = "Analise.findById", query = "SELECT a FROM Analise a WHERE a.id = :id"),
-    @NamedQuery(name = "Analise.findByTipo", query = "SELECT a FROM Analise a WHERE a.tipo = :tipo"),
     @NamedQuery(name = "Analise.findByNome", query = "SELECT a FROM Analise a WHERE a.nome = :nome"),
-    @NamedQuery(name = "Analise.findByPreco", query = "SELECT a FROM Analise a WHERE a.preco = :preco")})
-public class Analise implements EntityBase<Integer> {
+    @NamedQuery(name = "Analise.findByPreco", query = "SELECT a FROM Analise a WHERE a.preco = :preco"),
+    @NamedQuery(name = "Analise.findByTipo", query = "SELECT a FROM Analise a WHERE a.tipo = :tipo")})
+public class Analise implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "tipo")
-    private String tipo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -59,6 +54,11 @@ public class Analise implements EntityBase<Integer> {
     @NotNull
     @Column(name = "preco")
     private BigDecimal preco;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "tipo")
+    private String tipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "analise")
     private List<Faturamento> faturamentoList;
 
@@ -69,11 +69,11 @@ public class Analise implements EntityBase<Integer> {
         this.id = id;
     }
 
-    public Analise(Integer id, String tipo, String nome, BigDecimal preco) {
+    public Analise(Integer id, String nome, BigDecimal preco, String tipo) {
         this.id = id;
-        this.tipo = tipo;
         this.nome = nome;
         this.preco = preco;
+        this.tipo = tipo;
     }
 
     public Integer getId() {
@@ -82,14 +82,6 @@ public class Analise implements EntityBase<Integer> {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public String getNome() {
@@ -106,6 +98,14 @@ public class Analise implements EntityBase<Integer> {
 
     public void setPreco(BigDecimal preco) {
         this.preco = preco;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @XmlTransient

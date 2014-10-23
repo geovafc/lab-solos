@@ -3,8 +3,37 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 DROP SCHEMA IF EXISTS `solos` ;
-CREATE SCHEMA IF NOT EXISTS `solos` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `solos` DEFAULT CHARACTER SET latin1 ;
 USE `solos` ;
+
+-- -----------------------------------------------------
+-- Table `solos`.`usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`usuario` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`usuario` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(80) NOT NULL,
+  `nome` VARCHAR(80) NOT NULL,
+  `perfil` VARCHAR(20) NOT NULL,
+  `senha` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `solos`.`local`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `solos`.`local` ;
+
+CREATE TABLE IF NOT EXISTS `solos`.`local` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `municipio` VARCHAR(45) NOT NULL,
+  `estado` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `solos`.`proprietario`
@@ -13,28 +42,19 @@ DROP TABLE IF EXISTS `solos`.`proprietario` ;
 
 CREATE TABLE IF NOT EXISTS `solos`.`proprietario` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  `municipio` VARCHAR(45) NOT NULL,
-  `estado` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NULL,
+  `nome` VARCHAR(80) NOT NULL,
   `telefone` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `solos`.`usuario`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `solos`.`usuario` ;
-
-CREATE TABLE IF NOT EXISTS `solos`.`usuario` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  `login` VARCHAR(45) NOT NULL,
-  `senha` VARCHAR(255) NOT NULL,
-  `perfil` CHAR NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+  `email` VARCHAR(80) NULL DEFAULT NULL,
+  `local` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_proprietario_local2_idx` (`local` ASC),
+  CONSTRAINT `fk_proprietario_local2`
+    FOREIGN KEY (`local`)
+    REFERENCES `solos`.`local` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -44,25 +64,22 @@ DROP TABLE IF EXISTS `solos`.`solicitacao` ;
 
 CREATE TABLE IF NOT EXISTS `solos`.`solicitacao` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `usuario` INT NOT NULL,
+  `data_de_entrada` DATETIME NULL DEFAULT NULL,
+  `data_de_saida` DATETIME NULL DEFAULT NULL,
+  `procedencia_do_material` VARCHAR(45) NOT NULL,
   `proprietario` INT NOT NULL,
-  `data_de_entrada` TIMESTAMP NULL,
-  `data_de_saida` TIMESTAMP NULL,
-  `procedencia_do_material` VARCHAR(20) NOT NULL,
+  `usuario` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_solicitacao_usuario2_idx` (`usuario` ASC),
-  INDEX `fk_solicitacao_proprietario1_idx` (`proprietario` ASC),
-  CONSTRAINT `fk_solicitacao_usuario2`
+  INDEX `FK_mhtgkt1sof3cgefse00owssdo` (`proprietario` ASC),
+  INDEX `FK_k5dwyl3gq00j7vp4qa4c5jxrd` (`usuario` ASC),
+  CONSTRAINT `FK_k5dwyl3gq00j7vp4qa4c5jxrd`
     FOREIGN KEY (`usuario`)
-    REFERENCES `solos`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_solicitacao_proprietario1`
+    REFERENCES `solos`.`usuario` (`id`),
+  CONSTRAINT `FK_mhtgkt1sof3cgefse00owssdo`
     FOREIGN KEY (`proprietario`)
-    REFERENCES `solos`.`proprietario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `solos`.`proprietario` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -71,22 +88,28 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `solos`.`amostra` ;
 
 CREATE TABLE IF NOT EXISTS `solos`.`amostra` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `area` VARCHAR(45) NULL DEFAULT NULL,
+  `codigo` VARCHAR(45) NULL DEFAULT NULL,
+  `posicao_do_relevo` VARCHAR(45) NULL DEFAULT NULL,
+  `relevo` VARCHAR(45) NULL DEFAULT NULL,
+  `tipo` VARCHAR(45) NULL DEFAULT NULL,
+  `tipo_de_cobertura` VARCHAR(45) NULL DEFAULT NULL,
   `solicitacao` INT NOT NULL,
-  `codigo` VARCHAR(20) NULL,
-  `tipo` VARCHAR(20) NULL,
-  `area` VARCHAR(45) NULL,
-  `relevo` VARCHAR(45) NULL,
-  `posicao_do_relevo` VARCHAR(45) NULL,
-  `tipo_de_cobertura` VARCHAR(45) NULL,
+  `local` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_amostra_solicitacao1_idx` (`solicitacao` ASC),
-  CONSTRAINT `fk_amostra_solicitacao1`
+  INDEX `FK_ou52xj8oe52ejk30qy33r4u00` (`solicitacao` ASC),
+  INDEX `fk_amostra_local1_idx` (`local` ASC),
+  CONSTRAINT `FK_ou52xj8oe52ejk30qy33r4u00`
     FOREIGN KEY (`solicitacao`)
-    REFERENCES `solos`.`solicitacao` (`id`)
+    REFERENCES `solos`.`solicitacao` (`id`),
+  CONSTRAINT `fk_amostra_local1`
+    FOREIGN KEY (`local`)
+    REFERENCES `solos`.`local` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -95,12 +118,13 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `solos`.`analise` ;
 
 CREATE TABLE IF NOT EXISTS `solos`.`analise` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` VARCHAR(20) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
-  `preco` DECIMAL(8,2) NOT NULL,
+  `preco` DECIMAL(10,2) NOT NULL,
+  `tipo` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -109,26 +133,23 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `solos`.`faturamento` ;
 
 CREATE TABLE IF NOT EXISTS `solos`.`faturamento` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL,
+  `preco` DECIMAL(10,2) NOT NULL,
+  `tipo_de_desconto` CHAR(1) NULL DEFAULT NULL,
+  `valor_de_desconto` DECIMAL(10,2) NULL DEFAULT NULL,
   `amostra` INT NOT NULL,
   `analise` INT NOT NULL,
-  `preco` DECIMAL(8,2) NOT NULL,
-  `tipo_de_desconto` CHAR NULL,
-  `valor_de_desconto` DECIMAL(8,2) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_faturamento_amostra2_idx` (`amostra` ASC),
-  INDEX `fk_faturamento_analise2_idx` (`analise` ASC),
-  CONSTRAINT `fk_faturamento_amostra2`
-    FOREIGN KEY (`amostra`)
-    REFERENCES `solos`.`amostra` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_faturamento_analise2`
+  INDEX `FK_kf0donl5va878judeb387249b` (`amostra` ASC),
+  INDEX `FK_i4jx0k8ke71dd7w7uij8gahsp` (`analise` ASC),
+  CONSTRAINT `FK_i4jx0k8ke71dd7w7uij8gahsp`
     FOREIGN KEY (`analise`)
-    REFERENCES `solos`.`analise` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `solos`.`analise` (`id`),
+  CONSTRAINT `FK_kf0donl5va878judeb387249b`
+    FOREIGN KEY (`amostra`)
+    REFERENCES `solos`.`amostra` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

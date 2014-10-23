@@ -5,13 +5,22 @@
     <h:form id="formMenu">
         <p:menubar id="menubar">
             <p:menuitem id="mi_home" value="Home" outcome="index"/>
+            
             <p:submenu id="sm_cadastrar" label="Cadastrar">
                 <p:menuitem id="mi_analise" value="Análise" outcome="lista_analise"/>
                 <p:menuitem id="mi_proprietario" value="Proprietário" outcome="lista_proprietario"/>
                 <p:menuitem id="mi_usuario" value="Usuário" outcome="lista_usuario"/>
+                <p:menuitem id="mi_local" value="Local" outcome="lista_local"/>
             </p:submenu>
-            <p:menuitem id="mi_deposito" value="Solicitar Análise" outcome="form_solicitacao"/>
+            
+            <p:menuitem id="mi_deposito" 
+                        value="Solicitar Análise" 
+                        outcome="form_solicitacao"/>
+            
+            <p:menuitem id="mi_sair"
+                        value="Sair"
+                        icon="ui-icon-power"
+                        onclick="document.location = '#{request.contextPath}/j_spring_security_logout'" />
         </p:menubar>
     </h:form>
-    <br/>
 </ui:composition>
