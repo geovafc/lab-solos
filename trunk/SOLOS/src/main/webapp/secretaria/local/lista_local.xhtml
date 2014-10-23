@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/modelo/padrao.xhtml">
+        <ui:define name="conteudo">
+            <p:panel id="panel" header="Listagem de Locais">
+                
+                <p:growl id="mensagem" showDetail="true"/>
+                
+                <p>
+                    <p:button id="bt_inserir" 
+                              value="Inserir" 
+                              outcome="form_local"/>
+                </p>
+
+                <h:form id="form_local" style="width: 50%">
+
+                    <p:dataTable id="dt_local"
+                                 value="#{localBean.locais}"
+                                 var="local"
+                                 rows="10"
+                                 paginator="true"
+                                 emptyMessage="sem registros">
+                        <p:column headerText="Município">
+                            <span>#{localBean.local.municipio}</span>
+                        </p:column>
+
+                        <p:column headerText="Estado" width="110">
+                            <span>#{localBean.local.estado}</span>
+                        </p:column>
+                        
+                        <p:column headerText="Editar" width="55">
+                            <center>
+                                <p:commandButton id="cb_editar"
+                                                 ajax="false"
+                                                 icon="ui-icon-pencil"
+                                                 action="form_local">
+                                    <f:setPropertyActionListener
+                                        value="#{local}"
+                                        target="#{localBean.local}"/>
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Excluir" width="55">
+                            <center>
+                                <p:commandButton id="cb_excluir"
+                                                 icon="ui-icon-trash"
+                                                 action="#{localBean.remover()}"
+                                                 update="dt_local, :mensagem">
+                                    <f:setPropertyActionListener
+                                        value="#{local}"
+                                        target="#{localBean.local}"/>
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
+

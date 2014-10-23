@@ -6,44 +6,49 @@
 
     <navigation-rule>
         <navigation-case>
-            <to-view-id>/privado/index.xhtml</to-view-id>
+            <to-view-id>privado/index.jsf</to-view-id>
             <from-outcome>index</from-outcome>
         </navigation-case>
 
+        <!--secretaria-->
         <navigation-case>
-            <to-view-id>/privado/secretaria/proprietario/lista_proprietario.xhtml</to-view-id>
+            <to-view-id>secretaria/local/lista_local.jsf</to-view-id>
+            <from-outcome>lista_local</from-outcome>
+        </navigation-case>
+        <navigation-case>
+            <to-view-id>secretaria/local/form_local.jsf</to-view-id>
+            <from-outcome>form_local</from-outcome>
+        </navigation-case>
+        <navigation-case>
+            <to-view-id>secretaria/proprietario/lista_proprietario.jsf</to-view-id>
             <from-outcome>lista_proprietario</from-outcome>
         </navigation-case>
-        
-      
         <navigation-case>
-            <to-view-id>/privado/secretaria/proprietario/form_proprietario.xhtml</to-view-id>
+            <to-view-id>secretaria/proprietario/form_proprietario.jsf</to-view-id>
             <from-outcome>form_proprietario</from-outcome>
         </navigation-case>
-        
         <navigation-case>
-            <to-view-id>/privado/secretaria/analise/lista_analise.xhtml</to-view-id>
+            <to-view-id>secretaria/analise/lista_analise.jsf</to-view-id>
             <from-outcome>lista_analise</from-outcome>
         </navigation-case>
-        
         <navigation-case>
-            <to-view-id>/privado/secretaria/analise/form_analise.xhtml</to-view-id>
+            <to-view-id>secretaria/analise/form_analise.jsf</to-view-id>
             <from-outcome>form_analise</from-outcome>
         </navigation-case>
+        <navigation-case>
+            <to-view-id>secretaria/solicitacao/form_solicitacao.jsf</to-view-id>
+            <from-outcome>form_solicitacao</from-outcome>
+        </navigation-case>
+        <!--fim secretaria-->
         
         <navigation-case>
-            <to-view-id>/privado/secretaria/usuario/lista_usuario.xhtml</to-view-id>
+            <to-view-id>admin/usuario/lista_usuario.jsf</to-view-id>
             <from-outcome>lista_usuario</from-outcome>
         </navigation-case>
-        
         <navigation-case>
-            <to-view-id>/privado/secretaria/usuario/form_usuario.xhtml</to-view-id>
+            <to-view-id>admin/usuario/form_usuario.jsf</to-view-id>
             <from-outcome>form_usuario</from-outcome>
         </navigation-case>
         
-        <navigation-case>
-            <to-view-id>/privado/secretaria/solicitacao/form_solicitacao.xhtml</to-view-id>
-            <from-outcome>form_solicitacao</from-outcome>
-        </navigation-case>
     </navigation-rule>
 </faces-config>

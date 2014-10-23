@@ -5,7 +5,8 @@
  */
 package br.edu.ufra.solus.dao;
 
-import br.edu.ufra.solos.dao.service.GenericDAO;
+import br.edu.ufra.solos.dao.DAOFactory;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Usuario;
 import java.util.List;
 import org.junit.After;
@@ -46,13 +47,13 @@ public class GenericDAOImplIT {
 
     @Test
     public void testSalvar() throws Exception {
-        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123", 'A');
+        Usuario usuario = new Usuario(null, "mkmikael@gmail.com", "Mikael Lima", "ROLE_ADM", "123");
 
-        dao.salvar(usuario);
+        dao.criar(usuario);
 
         Usuario novo = dao.obter(Usuario.class, usuario.getId());
         assertEquals(usuario.getId(), novo.getId());
-        assertEquals(usuario.getLogin(), novo.getLogin());
+        assertEquals(usuario.getEmail(), novo.getEmail());
         assertEquals(usuario.getPerfil(), novo.getPerfil());
         assertEquals(usuario.getSenha(), novo.getSenha());
         
@@ -61,8 +62,8 @@ public class GenericDAOImplIT {
 
     @Test
     public void testRemover() throws Exception {
-        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123", 'A');
-        dao.salvar(usuario);
+        Usuario usuario = new Usuario(null, "mkmikael@gmail.com", "Mikael Lima", "ROLE_ADM", "123");
+        dao.criar(usuario);
         Integer id = usuario.getId();
 
         dao.remover(usuario);
@@ -73,12 +74,12 @@ public class GenericDAOImplIT {
 
     @Test
     public void testObterTodos() throws Exception {
-        Usuario u1 = new Usuario(null, "Mikael Lima", "mkmikael", "123", 'A');
-        Usuario u2 = new Usuario(null, "Geovane Freitas", "geo", "123", 'A');
-        Usuario u3 = new Usuario(null, "Lucas Toshiaki", "toto", "123", 'A');
-        dao.salvar(u1);
-        dao.salvar(u2);
-        dao.salvar(u3);
+        Usuario u1 = new Usuario(null, "mkmikael@gmail.com", "Mikael Lima", "ROLE_ADM", "123");
+        Usuario u2 = new Usuario(null, "geovane@gmail.com", "Geovane Freitas", "ROLE_ADM", "123");
+        Usuario u3 = new Usuario(null, "lucas@gmail.com", "Lucas Toshiaki", "ROLE_ADM", "123");
+        dao.criar(u1);
+        dao.criar(u2);
+        dao.criar(u3);
 
         List<Usuario> lista = dao.obterTodos(Usuario.class);
 

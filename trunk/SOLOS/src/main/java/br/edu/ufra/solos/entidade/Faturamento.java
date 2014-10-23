@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,11 +32,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Faturamento.findByPreco", query = "SELECT f FROM Faturamento f WHERE f.preco = :preco"),
     @NamedQuery(name = "Faturamento.findByTipoDeDesconto", query = "SELECT f FROM Faturamento f WHERE f.tipoDeDesconto = :tipoDeDesconto"),
     @NamedQuery(name = "Faturamento.findByValorDeDesconto", query = "SELECT f FROM Faturamento f WHERE f.valorDeDesconto = :valorDeDesconto")})
-public class Faturamento implements EntityBase<Integer> {
+public class Faturamento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id")
     private Integer id;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -50,12 +48,12 @@ public class Faturamento implements EntityBase<Integer> {
     private Character tipoDeDesconto;
     @Column(name = "valor_de_desconto")
     private BigDecimal valorDeDesconto;
-    @JoinColumn(name = "amostra", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Amostra amostra;
     @JoinColumn(name = "analise", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Analise analise;
+    @JoinColumn(name = "amostra", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Amostra amostra;
 
     public Faturamento() {
     }
@@ -101,20 +99,20 @@ public class Faturamento implements EntityBase<Integer> {
         this.valorDeDesconto = valorDeDesconto;
     }
 
-    public Amostra getAmostra() {
-        return amostra;
-    }
-
-    public void setAmostra(Amostra amostra) {
-        this.amostra = amostra;
-    }
-
     public Analise getAnalise() {
         return analise;
     }
 
     public void setAnalise(Analise analise) {
         this.analise = analise;
+    }
+
+    public Amostra getAmostra() {
+        return amostra;
+    }
+
+    public void setAmostra(Amostra amostra) {
+        this.amostra = amostra;
     }
 
     @Override

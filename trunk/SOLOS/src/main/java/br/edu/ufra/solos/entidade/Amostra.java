@@ -34,34 +34,34 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Amostra.findAll", query = "SELECT a FROM Amostra a"),
     @NamedQuery(name = "Amostra.findById", query = "SELECT a FROM Amostra a WHERE a.id = :id"),
-    @NamedQuery(name = "Amostra.findByCodigo", query = "SELECT a FROM Amostra a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo"),
     @NamedQuery(name = "Amostra.findByArea", query = "SELECT a FROM Amostra a WHERE a.area = :area"),
-    @NamedQuery(name = "Amostra.findByRelevo", query = "SELECT a FROM Amostra a WHERE a.relevo = :relevo"),
+    @NamedQuery(name = "Amostra.findByCodigo", query = "SELECT a FROM Amostra a WHERE a.codigo = :codigo"),
     @NamedQuery(name = "Amostra.findByPosicaoDoRelevo", query = "SELECT a FROM Amostra a WHERE a.posicaoDoRelevo = :posicaoDoRelevo"),
+    @NamedQuery(name = "Amostra.findByRelevo", query = "SELECT a FROM Amostra a WHERE a.relevo = :relevo"),
+    @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo"),
     @NamedQuery(name = "Amostra.findByTipoDeCobertura", query = "SELECT a FROM Amostra a WHERE a.tipoDeCobertura = :tipoDeCobertura")})
-public class Amostra implements EntityBase<Integer> {
+public class Amostra implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 20)
-    @Column(name = "codigo")
-    private String codigo;
-    @Size(max = 20)
-    @Column(name = "tipo")
-    private String tipo;
     @Size(max = 45)
     @Column(name = "area")
     private String area;
     @Size(max = 45)
-    @Column(name = "relevo")
-    private String relevo;
+    @Column(name = "codigo")
+    private String codigo;
     @Size(max = 45)
     @Column(name = "posicao_do_relevo")
     private String posicaoDoRelevo;
+    @Size(max = 45)
+    @Column(name = "relevo")
+    private String relevo;
+    @Size(max = 45)
+    @Column(name = "tipo")
+    private String tipo;
     @Size(max = 45)
     @Column(name = "tipo_de_cobertura")
     private String tipoDeCobertura;
@@ -70,6 +70,9 @@ public class Amostra implements EntityBase<Integer> {
     @JoinColumn(name = "solicitacao", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Solicitacao solicitacao;
+    @JoinColumn(name = "local", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Local local;
 
     public Amostra() {
     }
@@ -86,6 +89,14 @@ public class Amostra implements EntityBase<Integer> {
         this.id = id;
     }
 
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -94,20 +105,12 @@ public class Amostra implements EntityBase<Integer> {
         this.codigo = codigo;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getPosicaoDoRelevo() {
+        return posicaoDoRelevo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
+    public void setPosicaoDoRelevo(String posicaoDoRelevo) {
+        this.posicaoDoRelevo = posicaoDoRelevo;
     }
 
     public String getRelevo() {
@@ -118,12 +121,12 @@ public class Amostra implements EntityBase<Integer> {
         this.relevo = relevo;
     }
 
-    public String getPosicaoDoRelevo() {
-        return posicaoDoRelevo;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setPosicaoDoRelevo(String posicaoDoRelevo) {
-        this.posicaoDoRelevo = posicaoDoRelevo;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getTipoDeCobertura() {
@@ -149,6 +152,14 @@ public class Amostra implements EntityBase<Integer> {
 
     public void setSolicitacao(Solicitacao solicitacao) {
         this.solicitacao = solicitacao;
+    }
+
+    public Local getLocal() {
+        return local;
+    }
+
+    public void setLocal(Local local) {
+        this.local = local;
     }
 
     @Override

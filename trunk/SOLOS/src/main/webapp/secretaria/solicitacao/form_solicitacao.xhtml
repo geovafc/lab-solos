@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/modelo/padrao.xhtml">
+        <ui:define name="conteudo">
+            <h3>Formulário de Entrada de Amostras de Solo e Planta</h3>
+            <hr/>
+            <br/>
+            <h:form id="form_solicitacao">
+                <p:wizard id="wiz_solicitacao"
+                          backLabel="Voltar"
+                          nextLabel="Próximo">
+                    <p:tab title="Buscar Proprietário">
+                        <br/>
+                        <p:panel>
+                            <label for="ac_buscar_prop">Pesquisar </label>
+                            <p:autoComplete id="ac_buscar_prop"
+                                            size="40"
+                                            value="#{solicitacaoBean.solicitacao.proprietario}"
+                                            var="p"
+                                            itemLabel="#{p.nome}"
+                                            itemValue="#{p}"
+                                            minQueryLength="2"
+                                            placeholder="Preencha o campo para fazer a busca"
+                                            completeMethod="#{proprietarioBean.autoComplete}"
+                                            converter="proprietarioConverter">
+                                <p:ajax event="itemSelect" update="@form"/>
+                            </p:autoComplete>
+
+                            <div>
+                                <p:panel header="Dados do Proprietário"
+                                         style="display: inline-block; margin-top: 20px"
+                                         rendered="#{solicitacaoBean.solicitacao.proprietario != null}">
+                                    <h:panelGrid columns="4"
+                                                 cellpadding="5">
+                                        <h:outputText value="Nome do Proprietário:"/>
+                                        <h:outputText class="texto-bold" value="#{solicitacaoBean.solicitacao.proprietario.nome}"/>
+
+                                        <h:outputText value="Município:"/>
+                                        <h:outputText class="texto-bold" value="#{solicitacaoBean.solicitacao.proprietario.local.municipio}"/>
+
+                                        <h:outputText value="Telefone:"/>
+                                        <h:outputText class="texto-bold" value="#{solicitacaoBean.solicitacao.proprietario.telefone}"/>
+
+                                        <h:outputText value="Estado:"/>
+                                        <h:outputText class="texto-bold" value="#{solicitacaoBean.solicitacao.proprietario.local.estado}"/>
+
+                                        <h:outputText value="Email:"/>
+                                        <h:outputText class="texto-bold" value="#{solicitacaoBean.solicitacao.proprietario.email}"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </div>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab title="Dados da Solicitação">
+                        <br/>
+                        <p:panel>
+                            <h:panelGrid columns="3">
+                                <label for="sor_material">Procedência do Material:</label>
+                                <p:selectOneRadio id="sor_material"
+                                                  value="#{solicitacaoBean.solicitacao.procedenciaDoMaterial}">
+                                    <f:selectItem itemLabel="Particular"/>
+                                    <f:selectItem itemLabel="Projeto*"/>
+                                    <f:selectItem itemLabel="Aula*"/>
+                                </p:selectOneRadio>
+                                <p:message id="msg_material" for="sor_material"/>
+
+                                <label for="cl_entrada_input">Data de Entrada:</label>
+                                <p:calendar id="cl_entrada"
+                                            value="#{solicitacaoBean.solicitacao.dataDeEntrada}"
+                                            pattern="dd/MM/yyy"
+                                            mask="true"
+                                            locale="pt_BR"/>
+                                <p:message id="msg_entrada" for="cl_entrada"/>
+
+                                <label for="cl_saida_input">Data de Saída:</label>
+                                <p:calendar id="cl_saida"
+                                            value="#{solicitacaoBean.solicitacao.dataDeSaida}"
+                                            pattern="dd/MM/yyy"
+                                            mask="true"
+                                            locale="pt_BR"/>
+                                <p:message id="msg_saida" for="cl_saida"/>
+
+                                <label for="it_obs">Observação:</label>
+                                <p:inputTextarea id="it_obs" cols="30"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab title="Depositar Amostras">
+                        <p:panel>
+                            <h:panelGrid columns="3" cellpadding="4">
+                                <label>Área:</label>
+                                <p:selectOneRadio id="sor_area"
+                                                  value="#{solicitacaoBean.solicitacao.procedenciaDoMaterial}">
+                                    <f:selectItem itemLabel="Terra Firme"/>
+                                    <f:selectItem itemLabel="Várzea"/>
+                                    <f:selectItem itemLabel="Outros"/>
+                                </p:selectOneRadio>
+                                <p:inputText id="outros_area" 
+                                             widgetVar="outros_area"
+                                             disabled="true"/>
+
+                                <label>Relevo:</label>
+                                <p:selectOneRadio id="sor_relevo"
+                                                  value="#{solicitacaoBean.solicitacao.procedenciaDoMaterial}">
+                                    <f:selectItem itemLabel="Ondulado"/>
+                                    <f:selectItem itemLabel="Suave Ondulado"/>
+                                    <f:selectItem itemLabel="Outros"/>
+                                </p:selectOneRadio>
+                                <p:inputText id="outros_relevo" 
+                                             widgetVar="outros_relevo"
+                                             disabled="true"/>
+
+                                <label>Posição no Relevo:</label>
+                                <p:selectOneRadio id="sor_pos_relevo"
+                                                  value="#{solicitacaoBean.solicitacao.procedenciaDoMaterial}">
+                                    <f:selectItem itemLabel="Encosta"/>
+                                    <f:selectItem itemLabel="Baixada"/>
+                                    <f:selectItem itemLabel="Outros"/>
+                                </p:selectOneRadio>
+                                <p:inputText id="outros_pos_relevo" 
+                                             widgetVar="outros_pos_relevo"
+                                             disabled="true"/>
+
+                                <label>Profundidade de Coleta</label>
+                                <p:selectOneRadio id="sor_profundidade"
+                                                  value="#{solicitacaoBean.solicitacao.procedenciaDoMaterial}">
+                                    <f:selectItem itemLabel="0 a 20cm"/>
+                                    <f:selectItem itemLabel="20 a 40cm"/>
+                                    <f:selectItem itemLabel="40 a 60cm"/>
+                                    <f:selectItem itemLabel="Outros"/>
+                                </p:selectOneRadio>
+                                <p:inputText id="outros_profundidade" 
+                                             widgetVar="outros_profundidade"
+                                             disabled="true"/>
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <label>Tipo de Cobertura do Solo:</label>
+                                <p:inputText id="it_cobertura" size="45"/>
+                            </h:panelGrid>
+
+                            <br/>
+                            <p:pickList id="pl"/>
+                            <br/>
+
+                            <p:dataTable id="dt_solicitacao" 
+                                         emptyMessage="sem registros">
+                                <f:facet name="header">
+                                    Identificação de Análises Solicitadas
+                                </f:facet>
+
+                                <p:column headerText="Identificação da(s) Amostra(s)" width="90">
+                                </p:column>
+
+                                <p:column headerText="Tipo">
+                                </p:column>
+
+                                <p:column headerText="Área">
+                                </p:column>
+
+                                <p:column headerText="Relevo">
+                                </p:column>
+
+                                <p:column headerText="Posição no Relevo">
+                                </p:column>
+
+                                <p:column headerText="Profundidade de Coleta">
+                                </p:column>
+
+                                <p:column headerText="Tipo de Cobertura">
+                                </p:column>
+
+                                <p:column headerText="Editar" width="55">
+                                </p:column>
+
+                                <p:column headerText="Excluir" width="55">
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

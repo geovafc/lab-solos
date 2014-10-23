@@ -8,6 +8,7 @@
     <class>br.edu.ufra.solos.entidade.Faturamento</class>
     <class>br.edu.ufra.solos.entidade.Amostra</class>
     <class>br.edu.ufra.solos.entidade.Analise</class>
+    <class>br.edu.ufra.solos.entidade.Local</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/solos"/>

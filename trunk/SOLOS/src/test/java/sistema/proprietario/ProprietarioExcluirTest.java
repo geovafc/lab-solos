@@ -5,9 +5,9 @@
  */
 package sistema.proprietario;
 
-import br.edu.ufra.solos.dao.service.GenericDAO;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Proprietario;
-import br.edu.ufra.solus.dao.DAOFactory;
+import br.edu.ufra.solos.dao.DAOFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import selenium.SeleniumFactory;
-import selenium.caf.ProprietarioPO;
+import selenium.caf.ListaProprietarioPO;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
 
@@ -27,7 +27,7 @@ public class ProprietarioExcluirTest {
 
     private static WebDriver driver;
     private static GenericDAO<Proprietario> dao;
-    private static ProprietarioPO propPO;
+    private static ListaProprietarioPO propPO;
     private Proprietario p;
 
     public ProprietarioExcluirTest() {
@@ -37,7 +37,7 @@ public class ProprietarioExcluirTest {
     public static void setUpClass() throws Exception {
         driver = SeleniumFactory.getDriver();
         dao = DAOFactory.criarGenericDAO();
-        propPO = new ProprietarioPO(driver);
+        propPO = new ListaProprietarioPO(driver);
     }
 
     @AfterClass
@@ -55,8 +55,8 @@ public class ProprietarioExcluirTest {
     @Test
     @Ignore
     public void testExcluir() throws Exception {
-        p = new Proprietario(null, "Mikael", "Barcarena", "PA", "(91)8888-6666");
-        dao.salvar(p);
+        p = new Proprietario(null, "Mikael", "(91)8888-6666");
+        dao.criar(p);
         
         propPO.irParaPagina().clickExcluir();
         

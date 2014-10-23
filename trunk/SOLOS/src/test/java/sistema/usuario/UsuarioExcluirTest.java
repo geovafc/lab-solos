@@ -5,9 +5,9 @@
  */
 package sistema.usuario;
 
-import br.edu.ufra.solos.dao.service.GenericDAO;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Usuario;
-import br.edu.ufra.solus.dao.DAOFactory;
+import br.edu.ufra.solos.dao.DAOFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.openqa.selenium.WebDriver;
 import selenium.SeleniumFactory;
-import selenium.caf.UsuarioPO;
+import selenium.caf.ListaUsuarioPO;
 
 /**
  *
@@ -27,7 +27,7 @@ public class UsuarioExcluirTest {
     
     private static WebDriver driver;
     private static GenericDAO<Usuario> dao;
-    private static UsuarioPO po;
+    private static ListaUsuarioPO po;
     
     public UsuarioExcluirTest() {
     }
@@ -36,7 +36,7 @@ public class UsuarioExcluirTest {
     public static void setUpClass() {
         driver = SeleniumFactory.getDriver();
         dao = DAOFactory.criarGenericDAO();
-        po = new UsuarioPO(driver);
+        po = new ListaUsuarioPO(driver);
     }
     
     @AfterClass
@@ -54,8 +54,8 @@ public class UsuarioExcluirTest {
     @Test
     @Ignore
     public void testExcluir() throws Exception {
-        Usuario usuario = new Usuario(null, "Mikael Lima", "mkmikael", "123456", 'A');
-        dao.salvar(usuario);
+        Usuario usuario = new Usuario(null, "mkmikael@gmail.com", "Mikael Lima", "ROLE_ADM", "123");
+        dao.criar(usuario);
         
         po.irParaPagina().clickExcluir();
         

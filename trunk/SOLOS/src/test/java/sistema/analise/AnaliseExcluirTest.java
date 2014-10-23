@@ -5,9 +5,9 @@
  */
 package sistema.analise;
 
-import br.edu.ufra.solos.dao.service.GenericDAO;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Analise;
-import br.edu.ufra.solus.dao.DAOFactory;
+import br.edu.ufra.solos.dao.DAOFactory;
 import java.math.BigDecimal;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,7 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import selenium.SeleniumFactory;
-import selenium.caf.AnalisePO;
+import selenium.caf.ListaAnalisePO;
 
 /**
  *
@@ -28,7 +28,7 @@ public class AnaliseExcluirTest {
     
     private static WebDriver driver;
     private static GenericDAO<Analise> dao;
-    private static AnalisePO po;
+    private static ListaAnalisePO po;
     private Analise analise;
     
     public AnaliseExcluirTest() {
@@ -38,7 +38,7 @@ public class AnaliseExcluirTest {
     public static void setUpClass() {
         driver = SeleniumFactory.getDriver();
         dao = DAOFactory.criarGenericDAO();
-        po = new AnalisePO(driver);
+        po = new ListaAnalisePO(driver);
     }
     
     @AfterClass
@@ -56,8 +56,8 @@ public class AnaliseExcluirTest {
     @Test
     @Ignore
     public void testExcluir() throws Exception {
-        analise = new Analise(null, "Magnésio", "Solo", BigDecimal.TEN);
-        dao.salvar(analise);
+        analise = new Analise(null, "Magnésio", BigDecimal.TEN, "Solo");
+        dao.criar(analise);
         
         po.irParaPagina().clickExcluir();
         

@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -34,11 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proprietario.findAll", query = "SELECT p FROM Proprietario p"),
     @NamedQuery(name = "Proprietario.findById", query = "SELECT p FROM Proprietario p WHERE p.id = :id"),
     @NamedQuery(name = "Proprietario.findByNome", query = "SELECT p FROM Proprietario p WHERE p.nome = :nome"),
-    @NamedQuery(name = "Proprietario.findByMunicipio", query = "SELECT p FROM Proprietario p WHERE p.municipio = :municipio"),
-    @NamedQuery(name = "Proprietario.findByEstado", query = "SELECT p FROM Proprietario p WHERE p.estado = :estado"),
-    @NamedQuery(name = "Proprietario.findByEmail", query = "SELECT p FROM Proprietario p WHERE p.email = :email"),
-    @NamedQuery(name = "Proprietario.findByTelefone", query = "SELECT p FROM Proprietario p WHERE p.telefone = :telefone")})
-public class Proprietario implements EntityBase<Integer> {
+    @NamedQuery(name = "Proprietario.findByTelefone", query = "SELECT p FROM Proprietario p WHERE p.telefone = :telefone"),
+    @NamedQuery(name = "Proprietario.findByEmail", query = "SELECT p FROM Proprietario p WHERE p.email = :email")})
+public class Proprietario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,30 +47,23 @@ public class Proprietario implements EntityBase<Integer> {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 80)
     @Column(name = "nome")
     private String nome;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "municipio")
-    private String municipio;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "estado")
-    private String estado;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 45)
-    @Column(name = "email")
-    private String email;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "telefone")
     private String telefone;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 80)
+    @Column(name = "email")
+    private String email;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proprietario")
     private List<Solicitacao> solicitacaoList;
+    @JoinColumn(name = "local", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Local local;
 
     public Proprietario() {
     }
@@ -79,11 +72,9 @@ public class Proprietario implements EntityBase<Integer> {
         this.id = id;
     }
 
-    public Proprietario(Integer id, String nome, String municipio, String estado, String telefone) {
+    public Proprietario(Integer id, String nome, String telefone) {
         this.id = id;
         this.nome = nome;
-        this.municipio = municipio;
-        this.estado = estado;
         this.telefone = telefone;
     }
 
@@ -103,20 +94,12 @@ public class Proprietario implements EntityBase<Integer> {
         this.nome = nome;
     }
 
-    public String getMunicipio() {
-        return municipio;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setMunicipio(String municipio) {
-        this.municipio = municipio;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getEmail() {
@@ -127,14 +110,6 @@ public class Proprietario implements EntityBase<Integer> {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     @XmlTransient
     public List<Solicitacao> getSolicitacaoList() {
         return solicitacaoList;
@@ -142,6 +117,14 @@ public class Proprietario implements EntityBase<Integer> {
 
     public void setSolicitacaoList(List<Solicitacao> solicitacaoList) {
         this.solicitacaoList = solicitacaoList;
+    }
+
+    public Local getLocal() {
+        return local;
+    }
+
+    public void setLocal(Local local) {
+        this.local = local;
     }
 
     @Override

@@ -14,7 +14,7 @@ import selenium.SeleniumFactory;
  *
  * @author bpmlab
  */
-public class UsuarioPO {
+public class ListaProprietarioPO {
 
     private final WebDriver driver;
     private WebElement inserir;
@@ -22,29 +22,29 @@ public class UsuarioPO {
     private WebElement editar;
     private WebElement mensagem;
 
-    public UsuarioPO(WebDriver driver) {
+    public ListaProprietarioPO(WebDriver driver) {
         this.driver = driver;
     }
 
-    public UsuarioPO irParaPagina() {
-        driver.get(SeleniumFactory.PATH + "/privado/secretaria/usuario/lista_usuario.xhtml");
+    public ListaProprietarioPO irParaPagina() {
+        driver.get(SeleniumFactory.PATH + "/privado/secretaria/proprietario/lista_proprietario.xhtml");
         return this;
     }
-
-    public UsuarioPO clickInserir() {
+    
+    public ListaProprietarioPO clickInserir() {
         excluir = driver.findElement(By.id("bt_inserir"));
         inserir.click();
         return this;
     }
 
-    public UsuarioPO clickExcluir() {
-        excluir = driver.findElement(By.id("form_usuario:dt_usuario:0:cb_excluir"));
+    public ListaProprietarioPO clickExcluir() {
+        excluir = driver.findElement(By.id("form_proprietario:dt_proprietario:0:cb_excluir"));
         excluir.click();
         return this;
     }
 
-    public UsuarioPO clickEditar() {
-        excluir = driver.findElement(By.id("form_usuario:dt_usuario:0:cb_editar"));
+    public ListaProprietarioPO clickEditar() {
+        excluir = driver.findElement(By.id("form_proprietario:dt_proprietario:0:cb_editar"));
         editar.click();
         return this;
     }
