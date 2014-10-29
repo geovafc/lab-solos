@@ -37,7 +37,7 @@ public class AnaliseExcluirTest {
     @BeforeClass
     public static void setUpClass() {
         driver = SeleniumFactory.getDriver();
-        dao = DAOFactory.criarGenericDAO();
+        dao = DAOFactory.criarGenericDAO(Analise.class);
         po = new ListaAnalisePO(driver);
     }
     
@@ -57,13 +57,13 @@ public class AnaliseExcluirTest {
     @Ignore
     public void testExcluir() throws Exception {
         analise = new Analise(null, "Magnésio", BigDecimal.TEN, "Solo");
-        dao.criar(analise);
+        dao.salvar(analise);
         
         po.irParaPagina().clickExcluir();
         
         assertEquals("Excluído com sucesso!", po.getMensagem().getText());
         dao.getEntityManager().clear();
-        Analise atual = dao.obter(Analise.class, analise.getId());
+        Analise atual = dao.obter(analise.getId());
         assertNull(atual);
     }
 }

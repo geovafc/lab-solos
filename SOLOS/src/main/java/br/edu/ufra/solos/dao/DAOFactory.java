@@ -26,10 +26,10 @@ public class DAOFactory {
         return factory.createEntityManager();
     }
     
-    public static GenericDAO criarGenericDAO() {
-        return new GenericDAOImpl();
+    public static GenericDAO criarGenericDAO(Class<?> clazz) {
+        return new GenericDAOImpl(clazz);
     }
-    
+
     public static void main(String[] args) {
         factory.close();
     }

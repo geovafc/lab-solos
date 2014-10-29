@@ -35,7 +35,7 @@ public class UsuarioExcluirTest {
     @BeforeClass
     public static void setUpClass() {
         driver = SeleniumFactory.getDriver();
-        dao = DAOFactory.criarGenericDAO();
+        dao = DAOFactory.criarGenericDAO(Usuario.class);
         po = new ListaUsuarioPO(driver);
     }
     
@@ -55,13 +55,13 @@ public class UsuarioExcluirTest {
     @Ignore
     public void testExcluir() throws Exception {
         Usuario usuario = new Usuario(null, "mkmikael@gmail.com", "Mikael Lima", "ROLE_ADM", "123");
-        dao.criar(usuario);
+        dao.salvar(usuario);
         
         po.irParaPagina().clickExcluir();
         
         assertEquals("Excluído com sucesso!", po.getMensagem().getText());
         dao.getEntityManager().clear();
-        Usuario atual = dao.obter(Usuario.class, usuario.getId());
+        Usuario atual = dao.obter(usuario.getId());
         assertNull(atual);
     }
 }

@@ -11,7 +11,6 @@ import br.edu.ufra.solos.rn.RNFactory;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 /**
@@ -21,29 +20,16 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(value = "localConverter")
 public class LocalConverter implements Converter {
 
-    private final GenericRN<Local> rn = RNFactory.criarLocalRN();
+    private final GenericConverter<Local> converter = new GenericConverter<>(Local.class);
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-        if (string == null || string.isEmpty()) {
-            return null;
-        } else {
-            return rn.obter(new Integer(string));
-        }
+        return converter.getAsObject(fc, uic, string);
     }
 
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-        if (o == null) {
-            return null;
-        } else {
-            Integer id = ((Local) o).getId();
-            if (id == null) {
-                return null;
-            } else {
-                return id.toString();
-            }
-        }
+        return converter.getAsString(fc, uic, o);
     }
 
 }

@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Local.findById", query = "SELECT l FROM Local l WHERE l.id = :id"),
     @NamedQuery(name = "Local.findByMunicipio", query = "SELECT l FROM Local l WHERE l.municipio = :municipio"),
     @NamedQuery(name = "Local.findByEstado", query = "SELECT l FROM Local l WHERE l.estado = :estado")})
-public class Local implements Serializable {
+public class Local implements EntityBase<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

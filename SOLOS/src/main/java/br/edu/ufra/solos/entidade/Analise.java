@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Analise.findByNome", query = "SELECT a FROM Analise a WHERE a.nome = :nome"),
     @NamedQuery(name = "Analise.findByPreco", query = "SELECT a FROM Analise a WHERE a.preco = :preco"),
     @NamedQuery(name = "Analise.findByTipo", query = "SELECT a FROM Analise a WHERE a.tipo = :tipo")})
-public class Analise implements Serializable {
+public class Analise implements EntityBase<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

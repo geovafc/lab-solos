@@ -5,7 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Solicitacao.findByDataDeEntrada", query = "SELECT s FROM Solicitacao s WHERE s.dataDeEntrada = :dataDeEntrada"),
     @NamedQuery(name = "Solicitacao.findByDataDeSaida", query = "SELECT s FROM Solicitacao s WHERE s.dataDeSaida = :dataDeSaida"),
     @NamedQuery(name = "Solicitacao.findByProcedenciaDoMaterial", query = "SELECT s FROM Solicitacao s WHERE s.procedenciaDoMaterial = :procedenciaDoMaterial")})
-public class Solicitacao implements Serializable {
+public class Solicitacao implements EntityBase<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -130,6 +130,9 @@ public class Solicitacao implements Serializable {
 
     @XmlTransient
     public List<Amostra> getAmostraList() {
+        if (amostraList == null) {
+            amostraList = new ArrayList<>();
+        }
         return amostraList;
     }
 

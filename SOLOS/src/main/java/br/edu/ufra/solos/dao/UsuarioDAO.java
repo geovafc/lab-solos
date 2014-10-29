@@ -14,6 +14,10 @@ import javax.persistence.TypedQuery;
  */
 public class UsuarioDAO extends GenericDAOImpl<Usuario> {
 
+    public UsuarioDAO() {
+        super(Usuario.class);
+    }
+
     public Usuario obterPorEmail(String email) {
         TypedQuery<Usuario> query = getEntityManager()
                 .createNamedQuery("Usuario.findByEmail", Usuario.class)

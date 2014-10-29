@@ -5,7 +5,8 @@
  */
 package br.edu.ufra.solos.dao;
 
-import br.edu.ufra.solos.dao.DAOException;
+import br.edu.ufra.solos.entidade.EntityBase;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -14,17 +15,19 @@ import javax.persistence.EntityManager;
  * @author bpmlab
  * @param <T>
  */
-public interface GenericDAO<T> {
+public interface GenericDAO<T extends EntityBase<?>> extends Serializable{
 
-    void criar(T entidade) throws DAOException;
+    public void salvar(T entidade) throws DAOException;
+
+    public void remover(T entidade) throws DAOException;
     
-    void alterar(T entidade) throws DAOException;
-
-    void remover(T entidade) throws DAOException;
-
-    T obter(Class<T> clazz, Object id);
-
-    List<T> obterTodos(Class<T> clazz);
+    public void salvarNoContext(Object entidade);
     
-    EntityManager getEntityManager();
+    public void removerDoContext(Object entidade);
+
+    public T obter(Object id);
+
+    public List<T> obterTodos();
+    
+    public EntityManager getEntityManager();
 }
