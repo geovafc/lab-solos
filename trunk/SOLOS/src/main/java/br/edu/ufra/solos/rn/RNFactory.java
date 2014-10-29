@@ -11,23 +11,8 @@ package br.edu.ufra.solos.rn;
  */
 public class RNFactory {
 
-    public static GenericRN criarProprietarioRN() {
-        return new ProprietarioRN();
+    public static GenericRN criarGenericRN(Class<?> clazz) {
+        return new GenericRNImpl(clazz);
     }
-
-    public static GenericRN criarAnaliseRN() {
-        return new AnaliseRN();
-    }
-
-    public static GenericRN criarUsuarioRN() {
-        return new UsuarioRN();
-    }
-
-    public static GenericRN criarLocalRN() {
-        return new LocalRN();
-    }
-
-    public static GenericRN criarSolicitacaoRN() {
-        return new SolicitacaoRN();
-    }
+    
 }

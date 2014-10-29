@@ -5,45 +5,45 @@
  */
 package br.edu.ufra.solos.rn;
 
-import br.edu.ufra.solos.entidade.Usuario;
 import br.edu.ufra.solos.dao.DAOException;
 import br.edu.ufra.solos.dao.UsuarioDAO;
+import br.edu.ufra.solos.entidade.Usuario;
+import br.edu.ufra.solos.rn.springsecurity.Login;
 import java.util.List;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 /**
  *
- * @author bpmlab
+ * @author Dedo
  */
-public class UsuarioRN implements GenericRN<Usuario> {
+public class UsuarioRN {
 
     private final UsuarioDAO dao = new UsuarioDAO();
 
-    @Override
     public void salvar(Usuario entidade) throws DAOException {
-        if (entidade.getId() == null || entidade.getId() == 0) {
-            dao.criar(entidade);
-        } else {
-            dao.alterar(entidade);
-        }
+        String senhaEncode = Login.encode(entidade.getSenha());
+        entidade.setSenha(senhaEncode);
+        dao.salvar(entidade);
     }
 
-    @Override
     public void remover(Usuario entidade) throws DAOException {
         dao.remover(entidade);
     }
 
-    @Override
     public Usuario obter(Object id) {
-        return dao.obter(Usuario.class, id);
+        return dao.obter(id);
     }
-    
-    @Override
+
     public List<Usuario> obterTodos() {
-        return dao.obterTodos(Usuario.class);
+        return dao.obterTodos();
     }
 
-    public Usuario obterPorEmail(String nome) {
-        return dao.obterPorEmail(nome);
+    public Usuario obterPorEmail(String email) {
+        return dao.obterPorEmail(email);
     }
 
+    public static void main(String[] args) {
+        ShaPasswordEncoder sha = new ShaPasswordEncoder(256);
+        System.out.println(sha.encodePassword("123", null));
+    }
 }

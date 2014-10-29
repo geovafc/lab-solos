@@ -5,7 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Amostra.findByRelevo", query = "SELECT a FROM Amostra a WHERE a.relevo = :relevo"),
     @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo"),
     @NamedQuery(name = "Amostra.findByTipoDeCobertura", query = "SELECT a FROM Amostra a WHERE a.tipoDeCobertura = :tipoDeCobertura")})
-public class Amostra implements Serializable {
+public class Amostra implements EntityBase<Integer> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +59,9 @@ public class Amostra implements Serializable {
     @Size(max = 45)
     @Column(name = "relevo")
     private String relevo;
+    @Size(max = 45)
+    @Column(name = "profundidade")
+    private String profundidade;
     @Size(max = 45)
     @Column(name = "tipo")
     private String tipo;
@@ -121,6 +124,14 @@ public class Amostra implements Serializable {
         this.relevo = relevo;
     }
 
+    public String getProfundidade() {
+        return profundidade;
+    }
+
+    public void setProfundidade(String profundidade) {
+        this.profundidade = profundidade;
+    }
+
     public String getTipo() {
         return tipo;
     }
@@ -139,6 +150,9 @@ public class Amostra implements Serializable {
 
     @XmlTransient
     public List<Faturamento> getFaturamentoList() {
+        if (faturamentoList == null) {
+            faturamentoList = new ArrayList<>();
+        }
         return faturamentoList;
     }
 

@@ -5,8 +5,9 @@
  */
 package br.edu.ufra.solos.rn.springsecurity;
 
+import br.edu.ufra.solos.dao.UsuarioDAO;
 import br.edu.ufra.solos.entidade.Usuario;
-import br.edu.ufra.solos.rn.UsuarioRN;
+import br.edu.ufra.solos.util.JsfUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -25,24 +26,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 public class Login implements UserDetailsService {
 
-    private final UsuarioRN rn = new UsuarioRN();
+    private final UsuarioDAO dao = new UsuarioDAO();
 
     @Override
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException, DataAccessException {
-        System.out.println(string);
         if (string == null || string.isEmpty()) {
             throw new UsernameNotFoundException(string);
         }
 
         Usuario usuarioLogado;
         try {
-            usuarioLogado = rn.obterPorEmail(string);
+            usuarioLogado = dao.obterPorEmail(string);
         } catch (NoResultException e) {
             throw new UsernameNotFoundException(string, e);
         }
         List<GrantedAuthority> papeis = new ArrayList<>();
-        System.out.println(usuarioLogado.getPerfil());
-        System.out.println(usuarioLogado.getSenha());
         papeis.add(new GrantedAuthorityImpl(usuarioLogado.getPerfil()));
         return new User(usuarioLogado.getEmail(),
                 usuarioLogado.getSenha(),
@@ -53,9 +51,13 @@ public class Login implements UserDetailsService {
                 papeis);
     }
 
-    public static void main(String[] args) {
+    public static String encode(String senha) {
         ShaPasswordEncoder sha = new ShaPasswordEncoder(256);
-        String encyp = sha.encodePassword("123", null);
-        System.out.println(encyp);
+        return sha.encodePassword(senha, null);
+        
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(encode("123"));
     }
 }

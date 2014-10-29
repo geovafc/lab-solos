@@ -14,32 +14,24 @@ import java.util.List;
  *
  * @author bpmlab
  */
-public class ProprietarioRN implements GenericRN<Proprietario> {
+public class ProprietarioRN {
 
     private final ProprietarioDAO dao = new ProprietarioDAO();
 
-    @Override
-    public void salvar(Proprietario entity) throws DAOException {
-        if (entity.getId() == null || entity.getId() == 0) {
-            dao.criar(entity);
-        } else {
-            dao.alterar(entity);
-        }
+    public void salvar(Proprietario entidade) throws DAOException {
+        dao.salvar(entidade);
     }
 
-    @Override
-    public void remover(Proprietario entity) throws DAOException {
-        dao.remover(entity);
+    public void remover(Proprietario entidade) throws DAOException {
+        dao.remover(entidade);
     }
 
-    @Override
     public Proprietario obter(Object id) {
-        return dao.obter(Proprietario.class, id);
+        return dao.obter(id);
     }
 
-    @Override
     public List<Proprietario> obterTodos() {
-        return dao.obterTodos(Proprietario.class);
+        return dao.obterTodos();
     }
 
     public List<Proprietario> obterPorNomeComo(String nome) {

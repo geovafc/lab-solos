@@ -14,8 +14,13 @@ import java.util.List;
  */
 public class ProprietarioDAO extends GenericDAOImpl<Proprietario> {
 
+    public ProprietarioDAO() {
+        super(Proprietario.class);
+    }
+
     public List<Proprietario> obterPorNomeComo(String nome) {
-        String jpql = "select p from Proprietario p where p.nome like ':nome%'";
+        nome += "%";
+        String jpql = "select p from Proprietario p where p.nome like :nome";
         return getEntityManager()
                 .createQuery(jpql, Proprietario.class)
                 .setParameter("nome", nome)

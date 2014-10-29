@@ -4,19 +4,16 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:form id="formMenu">
         <p:menubar id="menubar">
-            <p:menuitem id="mi_home" value="Home" outcome="index"/>
-            
+            <p:menuitem id="mi_home" icon="ui-icon-home" value="Home" outcome="index"/>
+            <p:menuitem id="mi_deposito" value="Solicitar Análise" icon="ui-icon-document" outcome="form_solicitacao"/>
+
             <p:submenu id="sm_cadastrar" label="Cadastrar">
                 <p:menuitem id="mi_analise" value="Análise" outcome="lista_analise"/>
                 <p:menuitem id="mi_proprietario" value="Proprietário" outcome="lista_proprietario"/>
                 <p:menuitem id="mi_usuario" value="Usuário" outcome="lista_usuario"/>
                 <p:menuitem id="mi_local" value="Local" outcome="lista_local"/>
             </p:submenu>
-            
-            <p:menuitem id="mi_deposito" 
-                        value="Solicitar Análise" 
-                        outcome="form_solicitacao"/>
-            
+
             <p:menuitem id="mi_sair"
                         value="Sair"
                         icon="ui-icon-power"

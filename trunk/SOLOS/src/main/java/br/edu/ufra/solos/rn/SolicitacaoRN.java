@@ -8,39 +8,56 @@ package br.edu.ufra.solos.rn;
 import br.edu.ufra.solos.dao.DAOException;
 import br.edu.ufra.solos.dao.DAOFactory;
 import br.edu.ufra.solos.dao.GenericDAO;
+import br.edu.ufra.solos.entidade.Amostra;
+import br.edu.ufra.solos.entidade.Analise;
+import br.edu.ufra.solos.entidade.Faturamento;
 import br.edu.ufra.solos.entidade.Solicitacao;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * @author bpmlab
+ * @author Dedo
  */
-public class SolicitacaoRN implements GenericRN<Solicitacao> {
+public class SolicitacaoRN implements Serializable {
 
-    private final GenericDAO<Solicitacao> dao = DAOFactory.criarGenericDAO();
+    private final GenericDAO<Solicitacao> dao = DAOFactory.criarGenericDAO(Solicitacao.class);
 
-    @Override
     public void salvar(Solicitacao entidade) throws DAOException {
-        if (entidade.getId() == null || entidade.getId() == 0) {
-            dao.criar(entidade);
-        } else {
-            dao.alterar(entidade);
-        }
+        dao.salvar(entidade);
     }
 
-    @Override
     public void remover(Solicitacao entidade) throws DAOException {
         dao.remover(entidade);
     }
 
-    @Override
-    public Solicitacao obter(Object id) {
-        return dao.obter(Solicitacao.class, id);
+    public void salvarNoContexto(Object object) {
+        dao.salvarNoContext(object);
     }
 
-    @Override
-    public List<Solicitacao> obterTodos() {
-        return dao.obterTodos(Solicitacao.class);
+    public void removerDoContexto(Object object) {
+        dao.removerDoContext(object);
     }
-    
+
+    public List<Faturamento> montarFaturamento(List<Analise> analises, Amostra amostra) {
+        List<Faturamento> lista = new ArrayList<>();
+        for (Analise analise : analises) {
+            Faturamento f = new Faturamento();
+            f.setAmostra(amostra);
+            f.setAnalise(analise);
+            f.setPreco(analise.getPreco());
+            lista.add(f);
+        }
+        return lista;
+    }
+
+    public Solicitacao obter(Object id) {
+        return dao.obter(id);
+    }
+
+    public List<Solicitacao> obterTodos() {
+        return dao.obterTodos();
+    }
+
 }

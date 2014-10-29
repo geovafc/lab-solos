@@ -17,7 +17,7 @@
                               outcome="form_local"/>
                 </p>
 
-                <h:form id="form_local" style="width: 50%">
+                <h:form id="form_local">
 
                     <p:dataTable id="dt_local"
                                  value="#{localBean.locais}"
@@ -26,11 +26,11 @@
                                  paginator="true"
                                  emptyMessage="sem registros">
                         <p:column headerText="Município">
-                            <span>#{localBean.local.municipio}</span>
+                            <span>#{local.municipio}</span>
                         </p:column>
 
                         <p:column headerText="Estado" width="110">
-                            <span>#{localBean.local.estado}</span>
+                            <span>#{local.estado}</span>
                         </p:column>
                         
                         <p:column headerText="Editar" width="55">

@@ -42,12 +42,12 @@
         <!--fim secretaria-->
         
         <navigation-case>
-            <to-view-id>admin/usuario/lista_usuario.jsf</to-view-id>
-            <from-outcome>lista_usuario</from-outcome>
-        </navigation-case>
-        <navigation-case>
             <to-view-id>admin/usuario/form_usuario.jsf</to-view-id>
             <from-outcome>form_usuario</from-outcome>
+        </navigation-case>
+        <navigation-case>
+            <to-view-id>admin/usuario/lista_usuario.jsf</to-view-id>
+            <from-outcome>lista_usuario</from-outcome>
         </navigation-case>
         
     </navigation-rule>

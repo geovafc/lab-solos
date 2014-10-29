@@ -5,7 +5,10 @@
  */
 package br.edu.ufra.solos.dao;
 
+import br.edu.ufra.solos.entidade.EntityBase;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
@@ -15,36 +18,33 @@ import javax.persistence.TypedQuery;
  * @author bpmlab
  * @param <T>
  */
-public class GenericDAOImpl<T> implements GenericDAO<T> {
+public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
 
+    private static final Logger LOG = Logger.getLogger(GenericDAOImpl.class.getName());
+    
     private final EntityManager em = DAOFactory.criarEntityManager();
+    private final Class<T> clazz;
 
-    @Override
-    public void criar(T entidade) throws DAOException {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.persist(entidade);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw new DAOException(e);
-        }
+    public GenericDAOImpl(Class<T> clazz) {
+        this.clazz = clazz;
     }
 
     @Override
-    public void alterar(T entidade) throws DAOException {
+    public void salvar(T entidade) throws DAOException {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(entidade);
+            if (entidade.getId() == null) {
+                em.persist(entidade);
+            } else {
+                em.merge(entidade);
+            }
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
+            LOG.log(Level.INFO, "Erro ao Salvar!", e);
             throw new DAOException(e);
         }
     }
@@ -60,17 +60,28 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
             if (tx.isActive()) {
                 tx.rollback();
             }
+            LOG.log(Level.INFO, "Erro ao Remover!", e);
             throw new DAOException(e);
         }
     }
 
     @Override
-    public T obter(Class<T> clazz, Object id) {
+    public void salvarNoContext(Object entidade) {
+        em.persist(entidade);
+    }
+
+    @Override
+    public void removerDoContext(Object entidade) {
+        em.remove(entidade);
+    }
+
+    @Override
+    public T obter(Object id) {
         return em.find(clazz, id);
     }
 
     @Override
-    public List<T> obterTodos(Class<T> clazz) {
+    public List<T> obterTodos() {
         TypedQuery<T> query = em.createNamedQuery(clazz.getSimpleName() + ".findAll", clazz);
         System.out.println(clazz.getSimpleName() + ".findAll");
         return query.getResultList();

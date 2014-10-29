@@ -36,7 +36,7 @@ public class ProprietarioExcluirTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         driver = SeleniumFactory.getDriver();
-        dao = DAOFactory.criarGenericDAO();
+        dao = DAOFactory.criarGenericDAO(Proprietario.class);
         propPO = new ListaProprietarioPO(driver);
     }
 
@@ -56,13 +56,13 @@ public class ProprietarioExcluirTest {
     @Ignore
     public void testExcluir() throws Exception {
         p = new Proprietario(null, "Mikael", "(91)8888-6666");
-        dao.criar(p);
+        dao.salvar(p);
         
         propPO.irParaPagina().clickExcluir();
         
         assertEquals("Excluído com sucesso!", propPO.getMensagem().getText());
         dao.getEntityManager().clear();
-        Proprietario atual = dao.obter(Proprietario.class, p.getId());
+        Proprietario atual = dao.obter(p.getId());
         assertNull(atual);
     }
 }
