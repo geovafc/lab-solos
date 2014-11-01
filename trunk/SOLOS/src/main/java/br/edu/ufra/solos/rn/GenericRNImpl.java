@@ -8,7 +8,6 @@ package br.edu.ufra.solos.rn;
 import br.edu.ufra.solos.dao.DAOException;
 import br.edu.ufra.solos.dao.DAOFactory;
 import br.edu.ufra.solos.dao.GenericDAO;
-import br.edu.ufra.solos.entidade.EntityBase;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ import java.util.List;
  * @author Dedo
  * @param <T>
  */
-public class GenericRNImpl<T extends EntityBase<?>> implements GenericRN<T> {
+public class GenericRNImpl<T> implements GenericRN<T> {
 
     private final GenericDAO<T> dao;
 

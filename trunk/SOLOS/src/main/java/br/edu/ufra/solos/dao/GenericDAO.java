@@ -5,7 +5,6 @@
  */
 package br.edu.ufra.solos.dao;
 
-import br.edu.ufra.solos.entidade.EntityBase;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,7 +14,7 @@ import javax.persistence.EntityManager;
  * @author bpmlab
  * @param <T>
  */
-public interface GenericDAO<T extends EntityBase<?>> extends Serializable{
+public interface GenericDAO<T> extends Serializable{
 
     public void salvar(T entidade) throws DAOException;
 

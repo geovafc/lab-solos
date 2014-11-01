@@ -6,7 +6,6 @@
 package br.edu.ufra.solos.rn;
 
 import br.edu.ufra.solos.dao.DAOException;
-import br.edu.ufra.solos.entidade.EntityBase;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author bpmlab
  * @param <T>
  */
-public interface GenericRN<T extends EntityBase<?>> extends Serializable {
+public interface GenericRN<T> extends Serializable {
 
     public void salvar(T entidade) throws DAOException;
 

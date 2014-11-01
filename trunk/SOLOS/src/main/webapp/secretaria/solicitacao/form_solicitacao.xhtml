@@ -64,6 +64,17 @@
                                             requiredMessage="Campo Obrigatório"/>
                                 <p:message id="msg_saida" for="cl_saida"/>
                             </h:panelGrid>
+
+                            <p>
+                                <h:panelGrid columns="2">
+                                    <span class="ui-icon ui-icon-alert"></span>
+                                    <p:link id="link_prop" 
+                                            value="Proprietário não é cadastrado."
+                                            outcome="form_proprietario">
+                                        <f:param name="CADASTRAR_PROPRIETARIO" value="#{true}"/>
+                                    </p:link>
+                                </h:panelGrid>
+                            </p>
                         </p:panel>
                     </p:tab>
 
@@ -101,7 +112,7 @@
                                         </p:column>
                                     </p:selectOneMenu>
                                     <p:message id="msg_local" for="som_local"/>
-                                    
+
                                     <label for="it_cobertura">Tipo de Cobertura do Solo:</label>
                                     <p:inputText id="it_cobertura" 
                                                  size="40"
@@ -210,19 +221,19 @@
                                     <p:column headerText="Local">
                                         <span>#{amostra.local.municipio} / #{amostra.local.estado}</span>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Relevo">
                                         <span>#{amostra.relevo}</span>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Posição do Relevo">
                                         <span>#{amostra.posicaoDoRelevo}</span>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Profundidade da Coleta">
                                         <span>#{amostra.profundidade}</span>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Tipo de Cobertura">
                                         <span>#{amostra.tipoDeCobertura}</span>
                                     </p:column>

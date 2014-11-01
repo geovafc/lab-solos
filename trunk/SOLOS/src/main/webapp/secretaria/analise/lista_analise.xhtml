@@ -57,6 +57,9 @@
                                                  icon="ui-icon-trash"
                                                  action="#{analiseBean.remover()}"
                                                  update="dt_analise, :mensagem">
+                                    <p:confirm header="Confirmação" 
+                                               message="Você tem certeza que deseja excluir esta análise?" 
+                                               icon="ui-icon-alert"/>
                                     <f:setPropertyActionListener
                                         value="#{analise}"
                                         target="#{analiseBean.analise}"/>
@@ -64,6 +67,13 @@
                             </center>
                         </p:column>
                     </p:dataTable>
+
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"
+                                         icon="ui-icon-check"/>
+                        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"
+                                         icon="ui-icon-close"/>
+                    </p:confirmDialog>
                 </h:form>
             </p:panel>
         </ui:define>

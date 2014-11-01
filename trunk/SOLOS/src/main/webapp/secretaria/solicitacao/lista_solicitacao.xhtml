@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/modelo/padrao.xhtml">
+        <ui:define name="conteudo">
+            <br/>
+            <p:panel header="Listagem de Solicitações">
+                <h:form id="form_solicitacao">
+                    <p>
+                        <p:button id="bt_inserir"
+                                  value="Inserir"
+                                  outcome="form_solicitacao"/>
+                    </p>
+
+                    <p:dataTable id="dt_solicitacao"
+                                 value="#{solicitacaoBean.solicitacoes}"
+                                 var="s"
+                                 emptyMessage="sem registros">
+                        <p:column headerText="Proprietário">
+                            <span>#{s.proprietario.nome}</span>
+                        </p:column>
+
+                        <p:column headerText="Procedencia do Material">
+                            <h:outputText value="#{s.procedenciaDoMaterial}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Entrada">
+                            <h:outputText value="#{s.dataDeEntrada}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Saída">
+                            <h:outputText value="#{s.dataDeSaida}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Editar" width="65">
+                            <p:commandButton id="cb_editar"
+                                             icon="ui-icon-pencil"/>
+                        </p:column>
+
+                        <p:column headerText="Excluir" width="65">
+                            <p:commandButton id="cb_excluir"
+                                             icon="ui-icon-trash">
+                                <p:confirm header="Confirmação" 
+                                           message="Você tem certeza que deseja excluir esta análise?" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:confirmDialog global="true">
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"
+                                         icon="ui-icon-check"/>
+                        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"
+                                         icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
+

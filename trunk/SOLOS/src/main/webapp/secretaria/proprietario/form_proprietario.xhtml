@@ -10,6 +10,11 @@
             <p:panel id="panel" header="Cadastrar Proprietário">
                 <h:form id="form_proprietario">
                     <h:inputHidden id="ih_id" value="#{proprietarioBean.proprietario.id}"/>
+
+                    <f:metadata>
+                        <f:viewParam name="CADASTRAR_PROPRIETARIO" value="#{proprietarioBean.enviadoDaSolicitacao}"/>
+                    </f:metadata>
+
                     <h:panelGrid columns="3">
                         <label for="it_nome">Nome:</label>
                         <p:inputText id="it_nome" 
@@ -57,6 +62,7 @@
                         </p:selectOneMenu>
                         <p:message id="msg_local" for="som_local"/>
                     </h:panelGrid>
+                        
                     <p>
                         <p:commandButton id="cb_salvar" 
                                          ajax="false"

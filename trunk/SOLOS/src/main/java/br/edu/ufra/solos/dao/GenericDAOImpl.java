@@ -5,7 +5,7 @@
  */
 package br.edu.ufra.solos.dao;
 
-import br.edu.ufra.solos.entidade.EntityBase;
+import br.edu.ufra.solos.util.Reflexao;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  * @author bpmlab
  * @param <T>
  */
-public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
+public class GenericDAOImpl<T> implements GenericDAO<T> {
 
     private static final Logger LOG = Logger.getLogger(GenericDAOImpl.class.getName());
     
@@ -33,8 +33,9 @@ public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
     public void salvar(T entidade) throws DAOException {
         EntityTransaction tx = em.getTransaction();
         try {
+            Object id = Reflexao.obterId(entidade);
             tx.begin();
-            if (entidade.getId() == null) {
+            if (id == null) {
                 em.persist(entidade);
             } else {
                 em.merge(entidade);
@@ -91,5 +92,5 @@ public class GenericDAOImpl<T extends EntityBase<?>> implements GenericDAO<T> {
     public EntityManager getEntityManager() {
         return em;
     }
-
+    
 }
