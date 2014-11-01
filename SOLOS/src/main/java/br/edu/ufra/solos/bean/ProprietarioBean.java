@@ -8,12 +8,10 @@ package br.edu.ufra.solos.bean;
 import br.edu.ufra.solos.entidade.Proprietario;
 import br.edu.ufra.solos.util.JsfUtil;
 import br.edu.ufra.solos.dao.DAOException;
+import br.edu.ufra.solos.entidade.Local;
 import br.edu.ufra.solos.rn.ProprietarioRN;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -24,10 +22,11 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 @ManagedBean
 public class ProprietarioBean implements Serializable {
-
+    
     private final ProprietarioRN rn = new ProprietarioRN();
     private List<Proprietario> proprietarios;
     private Proprietario proprietario = new Proprietario();
+    private boolean enviadoDaSolicitacao = false;
 
     public ProprietarioBean() {
     }
@@ -36,7 +35,11 @@ public class ProprietarioBean implements Serializable {
         try {
             rn.salvar(proprietario);
             JsfUtil.mensagemSalvoComSucesso();
-            return "lista_proprietario";
+            if (!enviadoDaSolicitacao) {
+                return "lista_proprietario";
+            } else {
+                return "form_solicitacao";
+            }
         } catch (DAOException ex) {
             JsfUtil.mensagemDeErro();
             return null;
@@ -67,6 +70,14 @@ public class ProprietarioBean implements Serializable {
 
     public void setProprietario(Proprietario proprietario) {
         this.proprietario = proprietario;
+    }
+
+    public boolean getEnviadoDaSolicitacao() {
+        return enviadoDaSolicitacao;
+    }
+
+    public void setEnviadoDaSolicitacao(boolean enviadoDaSolicitacao) {
+        this.enviadoDaSolicitacao = enviadoDaSolicitacao;
     }
 
 }

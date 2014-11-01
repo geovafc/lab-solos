@@ -39,6 +39,10 @@
             <to-view-id>secretaria/solicitacao/form_solicitacao.jsf</to-view-id>
             <from-outcome>form_solicitacao</from-outcome>
         </navigation-case>
+        <navigation-case>
+            <to-view-id>secretaria/solicitacao/lista_solicitacao.jsf</to-view-id>
+            <from-outcome>lista_solicitacao</from-outcome>
+        </navigation-case>
         <!--fim secretaria-->
         
         <navigation-case>

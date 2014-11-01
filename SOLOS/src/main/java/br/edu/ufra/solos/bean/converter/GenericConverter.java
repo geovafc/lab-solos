@@ -5,9 +5,9 @@
  */
 package br.edu.ufra.solos.bean.converter;
 
-import br.edu.ufra.solos.entidade.EntityBase;
 import br.edu.ufra.solos.rn.GenericRN;
 import br.edu.ufra.solos.rn.RNFactory;
+import br.edu.ufra.solos.util.Reflexao;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,7 +17,7 @@ import javax.faces.convert.Converter;
  * @author Dedo
  * @param <T>
  */
-public class GenericConverter<T extends EntityBase<?>> implements Converter {
+public class GenericConverter<T> implements Converter {
 
     private final GenericRN<T> rn;
 
@@ -44,7 +44,7 @@ public class GenericConverter<T extends EntityBase<?>> implements Converter {
         if (o == null) {
             return null;
         } else {
-            Object id = ((T) o).getId();
+            Object id = Reflexao.obterId(o);
             if (id == null) {
                 return null;
             } else {

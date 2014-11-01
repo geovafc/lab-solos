@@ -46,4 +46,5 @@ public class JsfUtil implements Serializable {
         Map<String, Object> map = facesContext.getExternalContext().getSessionMap();
         return map.get(key);
     }
+    
 }
