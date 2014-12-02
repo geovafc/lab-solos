@@ -5,6 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
@@ -40,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Amostra.findByRelevo", query = "SELECT a FROM Amostra a WHERE a.relevo = :relevo"),
     @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo"),
     @NamedQuery(name = "Amostra.findByTipoDeCobertura", query = "SELECT a FROM Amostra a WHERE a.tipoDeCobertura = :tipoDeCobertura")})
-public class Amostra implements EntityBase<Integer> {
+public class Amostra implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,6 +14,7 @@ import br.edu.ufra.solos.entidade.Faturamento;
 import br.edu.ufra.solos.entidade.Solicitacao;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +53,13 @@ public class SolicitacaoRN implements Serializable {
         return lista;
     }
 
+    public String gerarCodigo() {
+        int aleatorio = (int)(Math.random() * 1000);
+        int ano = new Date().getYear();
+        return "A" + aleatorio + "" + ano;
+    }
+    
+    
     public Solicitacao obter(Object id) {
         return dao.obter(id);
     }

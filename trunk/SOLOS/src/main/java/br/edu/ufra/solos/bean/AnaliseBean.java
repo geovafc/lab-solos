@@ -3,8 +3,8 @@ package br.edu.ufra.solos.bean;
 import br.edu.ufra.solos.entidade.Analise;
 import br.edu.ufra.solos.util.JsfUtil;
 import br.edu.ufra.solos.dao.DAOException;
-import br.edu.ufra.solos.rn.RNFactory;
-import br.edu.ufra.solos.rn.GenericRN;
+import br.edu.ufra.solos.dao.DAOFactory;
+import br.edu.ufra.solos.dao.GenericDAO;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -14,7 +14,7 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 public class AnaliseBean implements Serializable {
 
-    private final GenericRN<Analise> rn = RNFactory.criarGenericRN(Analise.class);
+    private final GenericDAO<Analise> rn = DAOFactory.criarGenericDAO(Analise.class);
     private List<Analise> analises;
     private Analise analise = new Analise();
 

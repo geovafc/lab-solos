@@ -6,8 +6,6 @@
 package br.edu.ufra.solos.bean.converter;
 
 import br.edu.ufra.solos.entidade.Local;
-import br.edu.ufra.solos.rn.GenericRN;
-import br.edu.ufra.solos.rn.RNFactory;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

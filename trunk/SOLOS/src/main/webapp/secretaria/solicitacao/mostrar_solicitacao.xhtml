@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+            <p:fieldset legend="Dados da Solicitacao">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Procedência do Material:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.procedenciaDoMaterial}"/>
+                    <h:outputText value="Data de Entrada:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.dataDeEntrada}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                    <h:outputText value="Data de Saída:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.dataDeSaida}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            
+            <p:fieldset legend="Dados do Propietário">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Nome:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.proprietario.nome}"/>
+                    <h:outputText value="Telefone:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.proprietario.telefone}"/>
+                    <h:outputText value="Email:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.proprietario.email}"/>
+                    <h:outputText value="Município:"/>
+                    <h:outputText value="#{solicitacaoBean.solicitacao.proprietario.local.municipio}"/>
+                </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <p:fieldset legend="Análises Requeridas">
+                <p:dataTable id="dt_solicitacao_mostrar" 
+                             value="#{solicitacaoBean.solicitacao.amostraList}"
+                             var="amostra"
+                             emptyMessage="sem registros">
+                    <f:facet name="header">
+                        Identificação de Análises Solicitadas
+                    </f:facet>
+
+                    <p:column headerText="+" width="50">
+                        <p:rowToggler />
+                    </p:column>
+
+                    <p:column headerText="Identificação da(s) Amostra(s)" width="90">
+                        <span>#{amostra.codigo}</span>
+                    </p:column>
+
+                    <p:column headerText="Tipo">
+                        <span>#{amostra.tipo}</span>
+                    </p:column>
+
+                    <p:column headerText="Local">
+                        <span>#{amostra.local.municipio} / #{amostra.local.estado}</span>
+                    </p:column>
+
+                    <p:column headerText="Relevo">
+                        <span>#{amostra.relevo}</span>
+                    </p:column>
+
+                    <p:column headerText="Posição do Relevo">
+                        <span>#{amostra.posicaoDoRelevo}</span>
+                    </p:column>
+
+                    <p:column headerText="Profundidade da Coleta">
+                        <span>#{amostra.profundidade}</span>
+                    </p:column>
+
+                    <p:column headerText="Tipo de Cobertura">
+                        <span>#{amostra.tipoDeCobertura}</span>
+                    </p:column>
+
+                    <p:column headerText="Excluir" width="55">
+                        <p:commandButton id="cb_excluir_amostra"
+                                         icon="ui-icon-trash"
+                                         process="@form"
+                                         update="@form"
+                                         action="#{solicitacaoBean.removerAmostra()}">
+                            <f:setPropertyActionListener
+                                target="#{solicitacaoBean.amostra}"
+                                value="#{amostra}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:dataTable id="idt_faturamento"
+                                     value="#{amostra.faturamentoList}"
+                                     var="f">
+                            <p:column headerText="Análise">
+                                <span>#{f.analise.nome}</span>
+                            </p:column>
+
+                            <p:column headerText="Preço">
+                                <h:outputText value="#{f.preco}">
+                                    <f:convertNumber type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </p:fieldset>
+            <br/>
+            <p:button value="voltar" outcome="lista_solicitacao"/>
+</html>
+

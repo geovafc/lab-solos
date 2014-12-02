@@ -5,9 +5,9 @@
  */
 package br.edu.ufra.solos.bean;
 
+import br.edu.ufra.solos.dao.DAOFactory;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Local;
-import br.edu.ufra.solos.rn.RNFactory;
-import br.edu.ufra.solos.rn.GenericRN;
 import br.edu.ufra.solos.util.JsfUtil;
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class LocalBean implements Serializable {
 
-    private final GenericRN rn = RNFactory.criarGenericRN(Local.class);
+    private final GenericDAO rn = DAOFactory.criarGenericDAO(Local.class);
     private Local local = new Local();
     private List<Local> locais;
 
