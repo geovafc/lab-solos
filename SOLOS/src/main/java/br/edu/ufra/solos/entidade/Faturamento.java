@@ -5,6 +5,7 @@
  */
 package br.edu.ufra.solos.entidade;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Faturamento.findByPreco", query = "SELECT f FROM Faturamento f WHERE f.preco = :preco"),
     @NamedQuery(name = "Faturamento.findByTipoDeDesconto", query = "SELECT f FROM Faturamento f WHERE f.tipoDeDesconto = :tipoDeDesconto"),
     @NamedQuery(name = "Faturamento.findByValorDeDesconto", query = "SELECT f FROM Faturamento f WHERE f.valorDeDesconto = :valorDeDesconto")})
-public class Faturamento implements EntityBase<Integer> {
+public class Faturamento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

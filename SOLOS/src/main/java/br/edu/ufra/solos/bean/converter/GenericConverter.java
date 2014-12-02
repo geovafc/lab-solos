@@ -5,8 +5,8 @@
  */
 package br.edu.ufra.solos.bean.converter;
 
-import br.edu.ufra.solos.rn.GenericRN;
-import br.edu.ufra.solos.rn.RNFactory;
+import br.edu.ufra.solos.dao.DAOFactory;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.util.Reflexao;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -19,10 +19,10 @@ import javax.faces.convert.Converter;
  */
 public class GenericConverter<T> implements Converter {
 
-    private final GenericRN<T> rn;
+    private final GenericDAO<T> dao;
 
     public GenericConverter(Class<T> clazz) {
-        this.rn = RNFactory.criarGenericRN(clazz);
+        this.dao = DAOFactory.criarGenericDAO(clazz);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class GenericConverter<T> implements Converter {
         } else {
             try {
                 Integer id = new Integer(string);
-                return rn.obter(id);
+                return dao.obter(id);
             } catch (Exception e) {
                 return null;
             }

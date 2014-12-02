@@ -5,13 +5,13 @@
  */
 package br.edu.ufra.solos.bean;
 
+import br.edu.ufra.solos.dao.DAOFactory;
+import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Amostra;
 import br.edu.ufra.solos.entidade.Analise;
 import br.edu.ufra.solos.entidade.Faturamento;
 import br.edu.ufra.solos.entidade.Solicitacao;
 import br.edu.ufra.solos.entidade.Usuario;
-import br.edu.ufra.solos.rn.RNFactory;
-import br.edu.ufra.solos.rn.GenericRN;
 import br.edu.ufra.solos.rn.SolicitacaoRN;
 import br.edu.ufra.solos.util.JsfUtil;
 import java.io.Serializable;
@@ -32,8 +32,8 @@ import org.primefaces.model.DualListModel;
 public class SolicitacaoBean implements Serializable {
 
     private final SolicitacaoRN rn = new SolicitacaoRN();
-    private final GenericRN<Analise> rnA = RNFactory.criarGenericRN(Analise.class);
-    private final GenericRN<Usuario> rnU = RNFactory.criarGenericRN(Usuario.class);
+    private final GenericDAO<Analise> daoA = DAOFactory.criarGenericDAO(Analise.class);
+    private final GenericDAO<Usuario> daoU = DAOFactory.criarGenericDAO(Usuario.class);
 
     private Solicitacao solicitacao = new Solicitacao();
     private Amostra amostra = new Amostra();
@@ -44,8 +44,9 @@ public class SolicitacaoBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        analises = rnA.obterTodos();
-        solicitacao.setUsuario(rnU.obterTodos().get(0));
+        gerarCodigo();
+        analises = daoA.obterTodos();
+        solicitacao.setUsuario(daoU.obterTodos().get(0));
         dlmAnalises = new DualListModel(analises, new ArrayList<>());
     }
 
@@ -55,6 +56,10 @@ public class SolicitacaoBean implements Serializable {
             rn.salvarNoContexto(solicitacao);
         }
         return newStep;
+    }
+
+    public void gerarCodigo() {
+        amostra.setCodigo(rn.gerarCodigo());
     }
 
     public String salvar() {
@@ -84,12 +89,14 @@ public class SolicitacaoBean implements Serializable {
         solicitacao.getAmostraList().add(amostra);
         rn.salvarNoContexto(amostra);
         amostra = new Amostra();
+        gerarCodigo();
     }
 
     public void removerAmostra() {
         solicitacao.getAmostraList().remove(amostra);
         rn.removerDoContexto(amostra);
         amostra = new Amostra();
+        gerarCodigo();
     }
 
     public DualListModel<Analise> getDlmAnalises() {
@@ -101,9 +108,7 @@ public class SolicitacaoBean implements Serializable {
     }
 
     public List<Solicitacao> getSolicitacoes() {
-        if (solicitacao == null) {
-            solicitacoes = rn.obterTodos();
-        }
+        solicitacoes = rn.obterTodos();
         return solicitacoes;
     }
 

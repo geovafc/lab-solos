@@ -21,7 +21,14 @@
                                  var="s"
                                  emptyMessage="sem registros">
                         <p:column headerText="Proprietário">
-                            <span>#{s.proprietario.nome}</span>
+                            <p:commandLink 
+                                value="#{s.proprietario.nome}"
+                                onclick="PF('dlg').show()"
+                                update=":form">
+                                <f:setPropertyActionListener 
+                                    target="#{solicitacaoBean.solicitacao}"
+                                    value="#{s}"/>
+                            </p:commandLink>
                         </p:column>
 
                         <p:column headerText="Procedencia do Material">
@@ -49,10 +56,15 @@
 
                         <p:column headerText="Excluir" width="65">
                             <p:commandButton id="cb_excluir"
-                                             icon="ui-icon-trash">
+                                             icon="ui-icon-trash"
+                                             action="#{solicitacaoBean.remover()}"
+                                             update="@form">
                                 <p:confirm header="Confirmação" 
                                            message="Você tem certeza que deseja excluir esta análise?" 
                                            icon="ui-icon-alert"/>
+                                <f:setPropertyActionListener 
+                                    target="#{solicitacaoBean.solicitacao}"
+                                    value="#{s}"/>
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
@@ -65,6 +77,12 @@
                     </p:confirmDialog>
                 </h:form>
             </p:panel>
+            
+            <p:dialog widgetVar="dlg">
+                <h:form id="form">
+                    <ui:include src="/secretaria/solicitacao/mostrar_solicitacao.xhtml"/>
+                </h:form>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>
