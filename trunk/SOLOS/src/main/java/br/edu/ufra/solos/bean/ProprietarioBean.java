@@ -8,8 +8,7 @@ package br.edu.ufra.solos.bean;
 import br.edu.ufra.solos.entidade.Proprietario;
 import br.edu.ufra.solos.util.JsfUtil;
 import br.edu.ufra.solos.dao.DAOException;
-import br.edu.ufra.solos.entidade.Local;
-import br.edu.ufra.solos.rn.ProprietarioRN;
+import br.edu.ufra.solos.dao.ProprietarioDAO;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +22,7 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 public class ProprietarioBean implements Serializable {
     
-    private final ProprietarioRN rn = new ProprietarioRN();
+    private final ProprietarioDAO dao = new ProprietarioDAO();
     private List<Proprietario> proprietarios;
     private Proprietario proprietario = new Proprietario();
     private boolean enviadoDaSolicitacao = false;
@@ -33,7 +32,7 @@ public class ProprietarioBean implements Serializable {
 
     public String salvar() {
         try {
-            rn.salvar(proprietario);
+            dao.salvar(proprietario);
             JsfUtil.mensagemSalvoComSucesso();
             if (!enviadoDaSolicitacao) {
                 return "lista_proprietario";
@@ -48,7 +47,7 @@ public class ProprietarioBean implements Serializable {
 
     public void remover() {
         try {
-            rn.remover(proprietario);
+            dao.remover(proprietario);
             JsfUtil.mensagemSalvoComSucesso();
         } catch (DAOException ex) {
             JsfUtil.mensagemDeErro();
@@ -56,11 +55,11 @@ public class ProprietarioBean implements Serializable {
     }
 
     public List<Proprietario> autoComplete(String busca) {
-        return rn.obterPorNomeComo(busca);
+        return dao.obterPorNomeComo(busca);
     }
     
     public List<Proprietario> getProprietarios() {
-        proprietarios = rn.obterTodos();
+        proprietarios = dao.obterTodos();
         return proprietarios;
     }
 
