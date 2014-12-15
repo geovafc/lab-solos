@@ -4,6 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/modelo/padrao.xhtml">
         <ui:define name="conteudo">
@@ -13,33 +14,68 @@
             <p:panel id="panel" header="Listagem de Análises">
 
                 <p>
-                    <p:button id="bt_inserir" value="Inserir" outcome="form_analise"/>
+                    <p:button id="bt_inserir" value="Inserir" outcome="form_analise" icon="ui-icon-plus"/>
                 </p>
 
                 <h:form id="form_analise">
+                    <p>
+                        <p:panel header="Exportar para PDF ou Excel">
+                            <h:commandLink>
+                                <p:graphicImage library="imagem" name="pdf.png"/>
+                                <pe:exporter type="pdf" 
+                                             encoding="iso-8859-1"
+                                             target="dt_analise"
+                                             fileName="analises"
+                                             subTable="true" />
+                            </h:commandLink>
+
+                            <h:commandLink>
+                                <p:graphicImage library="imagem" name="excel.png" width="48" height="48"/>
+                                <pe:exporter type="xlsx" 
+                                             encoding="iso-8859-1"
+                                             target="dt_analise" 
+                                             fileName="analises"
+                                             subTable="true"/>
+                            </h:commandLink>
+                        </p:panel>
+                    </p>
+
                     <p:dataTable id="dt_analise"
-                                 value="#{analiseBean.analises}"
-                                 var="analise"
-                                 paginator="true"
-                                 rows="10"
+                                 value="#{analiseBean.tipos}"
+                                 var="tipo"
                                  emptyMessage="sem registros">
 
-                        <p:column headerText="Análise">
-                            <span>#{analise.nome} </span>
-                        </p:column>
+                        <f:facet name="header">
+                            Lista de Análises
+                        </f:facet>
 
-                        <p:column headerText="Preço" width="100">
-                            <h:outputText value="#{analise.preco}">
-                                <f:convertNumber type="currency"/>
-                            </h:outputText>
-                        </p:column>
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Análise"/>
+                                <p:column headerText="Preço"/>
+                                <p:column headerText="" width="55"/>
+                                <p:column headerText="" width="55"/>
+                            </p:row>
+                        </p:columnGroup>
 
-                        <p:column headerText="Tipo" width="100">
-                            <span>#{analise.tipo}</span>
-                        </p:column>
+                        <p:subTable id="sub_dt_analise"
+                                    value="#{analiseBean.obterPorTipo(tipo)}"
+                                    var="analise">
+                            <f:facet name="header">
+                                <h:outputText value="#{tipo}" style="font-size: 1.3em"/>
+                            </f:facet>
 
-                        <p:column headerText="Editar" width="55">
-                            <center>
+                            <p:column>
+                                <h:outputText value="#{analise.nome}"/>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{analise.preco}">
+                                    <f:convertNumber type="currency"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column style="text-align: center">
                                 <p:commandButton id="cb_editar"
                                                  ajax="false"
                                                  icon="ui-icon-pencil"
@@ -48,15 +84,13 @@
                                         value="#{analise}"
                                         target="#{analiseBean.analise}"/>
                                 </p:commandButton>
-                            </center>
-                        </p:column>
+                            </p:column>
 
-                        <p:column headerText="Excluir" width="55">
-                            <center>
+                            <p:column style="text-align: center">
                                 <p:commandButton id="cb_excluir"
                                                  icon="ui-icon-trash"
                                                  action="#{analiseBean.remover()}"
-                                                 update="dt_analise, :mensagem">
+                                                 update=":form_analise:dt_analise, :mensagem">
                                     <p:confirm header="Confirmação" 
                                                message="Você tem certeza que deseja excluir esta análise?" 
                                                icon="ui-icon-alert"/>
@@ -64,8 +98,8 @@
                                         value="#{analise}"
                                         target="#{analiseBean.analise}"/>
                                 </p:commandButton>
-                            </center>
-                        </p:column>
+                            </p:column>
+                        </p:subTable>
                     </p:dataTable>
 
                     <p:confirmDialog global="true">
@@ -76,6 +110,7 @@
                     </p:confirmDialog>
                 </h:form>
             </p:panel>
+            <br/><br/>
         </ui:define>
     </ui:composition>
 </html>

@@ -4,6 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/modelo/padrao.xhtml">
         <ui:define name="conteudo">
@@ -13,67 +14,96 @@
             <p:panel id="panel" header="Listagem de Proprietários">
 
                 <p>
-                    <p:button id="bt_inserir" value="Inserir" outcome="form_proprietario"/>
+                    <p:button id="bt_inserir" value="Inserir" outcome="form_proprietario" icon="ui-icon-plus"/>
                 </p>
 
                 <h:form id="form_proprietario">
+                    <p>
+                        <p:panel header="Exportar para PDF ou Excel">
+                            <h:commandLink>
+                                <p:graphicImage library="imagem" name="pdf.png"/>
+                                <pe:exporter type="pdf" 
+                                             encoding="iso-8859-1"
+                                             target="dt_proprietario"
+                                             fileName="proprietarios"/>
+                            </h:commandLink>
+
+                            <h:commandLink>
+                                <p:graphicImage library="imagem" name="excel.png" width="48" height="48"/>
+                                <pe:exporter type="xlsx" 
+                                             encoding="iso-8859-1"
+                                             target="dt_proprietario"
+                                             fileName="proprietarios"/>
+                            </h:commandLink>
+                        </p:panel>
+                    </p>
+
                     <p:dataTable id="dt_proprietario"
                                  value="#{proprietarioBean.proprietarios}"
                                  var="proprietario"
                                  paginator="true"
-                                 rows="10"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5 10 15"
                                  emptyMessage="sem registros">
-                        <p:column headerText="Nome">
-                            <span>#{proprietario.nome}</span>
+                        <f:facet name="header">
+                            Lista de Proprietários
+                        </f:facet>
+
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Nome" filterBy="#{proprietario.nome}"/>
+                                <p:column headerText="Município" filterBy="#{proprietario.local.municipio}"/>
+                                <p:column headerText="Estado" width="110" filterBy="#{proprietario.local.estado}"/>
+                                <p:column headerText="Email"/>
+                                <p:column headerText="Telefone" width="110"/>
+                                <p:column headerText="" width="55"/>
+                                <p:column headerText="" width="55"/>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:column>
+                            <h:outputText value="#{proprietario.nome}"/>
                         </p:column>
 
-                        <p:column headerText="Município">
-                            <span>#{proprietario.local.municipio}</span>
+                        <p:column>
+                            <h:outputText value="#{proprietario.local.municipio}"/>
                         </p:column>
 
-                        <p:column headerText="Estado" width="60">
-                            <center>
-                                <span>#{proprietario.local.estado}</span>
-                            </center>
+                        <p:column>
+                            <h:outputText value="#{proprietario.local.estado}"/>
                         </p:column>
 
-                        <p:column headerText="Email">
-                            <span>#{proprietario.email}</span>
+                        <p:column>
+                            <h:outputText value="#{proprietario.email}"/>
                         </p:column>
 
-                        <p:column headerText="Telefone" width="110">
-                            <center>
-                                <span>#{proprietario.telefone}</span>
-                            </center>
+                        <p:column>
+                            <h:outputText value="#{proprietario.telefone}"/>
                         </p:column>
 
-                        <p:column headerText="Editar" width="55">
-                            <center>
-                                <p:commandButton id="cb_editar"
-                                                 ajax="false"
-                                                 icon="ui-icon-pencil"
-                                                 action="form_proprietario">
-                                    <f:setPropertyActionListener
-                                        value="#{proprietario}"
-                                        target="#{proprietarioBean.proprietario}"/>
-                                </p:commandButton>
-                            </center>
+                        <p:column style="text-align: center">
+                            <p:commandButton id="cb_editar"
+                                             ajax="false"
+                                             icon="ui-icon-pencil"
+                                             action="form_proprietario">
+                                <f:setPropertyActionListener
+                                    value="#{proprietario}"
+                                    target="#{proprietarioBean.proprietario}"/>
+                            </p:commandButton>
                         </p:column>
 
-                        <p:column headerText="Excluir" width="55">
-                            <center>
-                                <p:commandButton id="cb_excluir"
-                                                 icon="ui-icon-trash"
-                                                 update="dt_proprietario, :mensagem"
-                                                 action="#{proprietarioBean.remover()}">
-                                    <p:confirm header="Confirmação" 
-                                               message="Você tem certeza que deseja excluir este proprietário?" 
-                                               icon="ui-icon-alert"/>
-                                    <f:setPropertyActionListener
-                                        value="#{proprietario}"
-                                        target="#{proprietarioBean.proprietario}"/>
-                                </p:commandButton>
-                            </center>
+                        <p:column style="text-align: center">
+                            <p:commandButton id="cb_excluir"
+                                             icon="ui-icon-trash"
+                                             update="dt_proprietario, :mensagem"
+                                             action="#{proprietarioBean.remover()}">
+                                <p:confirm header="Confirmação" 
+                                           message="Você tem certeza que deseja excluir este proprietário?" 
+                                           icon="ui-icon-alert"/>
+                                <f:setPropertyActionListener
+                                    value="#{proprietario}"
+                                    target="#{proprietarioBean.proprietario}"/>
+                            </p:commandButton>
                         </p:column>
                     </p:dataTable>
 
