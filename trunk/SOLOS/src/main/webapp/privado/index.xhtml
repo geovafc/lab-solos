@@ -1,12 +1,14 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 template="/modelo/padrao.xhtml">
     <ui:define name="conteudo">
         <br/>
-        <div class="btn-panel">
-            <div class="btn-footer">
-                
-            </div>
-        </div>
+        <pe:timeline id="timeline"
+                     value="#{inicioBean.timelineModel}" 
+                     height="250px"
+                     eventStyle="dot"
+                     showNavigation="true"
+                     showCurrentTime="true"/>
     </ui:define>
 </ui:composition>

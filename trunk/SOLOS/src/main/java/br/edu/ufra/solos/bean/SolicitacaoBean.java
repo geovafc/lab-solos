@@ -41,6 +41,8 @@ public class SolicitacaoBean implements Serializable {
     private DualListModel<Analise> dlmAnalises;
     private List<Solicitacao> solicitacoes;
     private List<Analise> analises;
+    
+    private int level = 1;
 
     @PostConstruct
     public void init() {
@@ -126,6 +128,14 @@ public class SolicitacaoBean implements Serializable {
 
     public void setAmostra(Amostra amostra) {
         this.amostra = amostra;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
 }

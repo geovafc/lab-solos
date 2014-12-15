@@ -11,6 +11,7 @@ import br.edu.ufra.solos.dao.DAOException;
 import br.edu.ufra.solos.rn.UsuarioRN;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
