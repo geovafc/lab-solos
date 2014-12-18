@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+            <p:panel>
+                <h:form id="form_amostra">
+                    <pe:blockUI widgetVar="blockUIWidget" centerX="true" centerY="true">
+                        <h:panelGrid columns="1">
+                            <p:graphicImage library="imagem" name="ajax_loader.gif"/>
+                            <h:outputText value="Aguarde..."/>
+                        </h:panelGrid>
+                    </pe:blockUI> 
+
+                    <h:panelGrid columns="3">
+
+                        <label for="it_cobertura">Tipo de Cobertura do Solo:</label>
+                        <p:inputText id="it_cobertura" 
+                                     value="#{solicitacaoBean.amostra.tipoDeCobertura}"/>
+                        <p:message for="it_cobertura"/>
+
+                        <label for="som_local">Local:</label>
+                        <p:selectOneMenu id="som_local"
+                                         value="#{solicitacaoBean.amostra.local}"
+                                         var="local"
+                                         required="true"
+                                         requiredMessage="Campo Obrigatório"
+                                         converter="localConverter">
+                            <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+                            <f:selectItems value="#{localBean.locais}"
+                                           var="l"
+                                           itemLabel="#{l.municipio}"
+                                           itemValue="#{l}"/>
+
+                            <p:column>
+                                <span>#{local.municipio}</span>
+                            </p:column>
+
+                            <p:column>
+                                <span>#{local.estado}</span>
+                            </p:column>
+                        </p:selectOneMenu>
+                        <p:message id="msg_local" for="som_local"/>
+
+                        <label>Tipo:</label>
+                        <p:selectOneRadio id="sor_tipo"
+                                          value="#{solicitacaoBean.amostra.tipo}"
+                                          required="true"
+                                          requiredMessage="Campo Obrigatório">
+                            <f:selectItem itemLabel="Solo" itemValue="SOLO"/>
+                            <f:selectItem itemLabel="Planta" itemValue="PLANTA"/>
+                            <p:ajax event="valueChange" process="@this" update=":form_solicitacao:dt_analises_selection"/>
+                        </p:selectOneRadio>
+                        <p:message id="msg_tipo" for="sor_tipo"/>
+
+                        <label>Área:</label>
+                        <p:selectOneRadio id="sor_area"
+                                          value="#{solicitacaoBean.amostra.area}">
+                            <f:selectItem itemLabel="Terra Firme" itemValue="Terra Firme"/>
+                            <f:selectItem itemLabel="Várzea" itemValue="Várzea"/>
+                            <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
+                        </p:selectOneRadio>
+                        <p:message for="sor_area"/>
+
+                        <label>Relevo:</label>
+                        <p:selectOneRadio id="sor_relevo"
+                                          value="#{solicitacaoBean.amostra.relevo}">
+                            <f:selectItem itemLabel="Ondulado" itemValue="Ondulado"/>
+                            <f:selectItem itemLabel="Suave Ondulado" itemValue="Suave Ondulado"/>
+                            <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
+                        </p:selectOneRadio>
+                        <p:message for="sor_relevo"/>
+
+                        <label>Posição no Relevo:</label>
+                        <p:selectOneRadio id="sor_pos_relevo"
+                                          value="#{solicitacaoBean.amostra.posicaoDoRelevo}">
+                            <f:selectItem itemLabel="Encosta" itemValue="Encosta"/>
+                            <f:selectItem itemLabel="Baixada" itemValue="Baixada"/>
+                            <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
+                        </p:selectOneRadio>
+                        <p:message for="sor_pos_relevo"/>
+
+                        <label>Profundidade da Coleta:</label>
+                        <p:selectOneRadio id="sor_profundidade"
+                                          value="#{solicitacaoBean.amostra.profundidade}">
+                            <f:selectItem itemLabel="0 a 20cm" itemValue="0 a 20cm"/>
+                            <f:selectItem itemLabel="20 a 40cm" itemValue="20 a 40cm"/>
+                            <f:selectItem itemLabel="40 a 60cm" itemValue="40 a 60cm"/>
+                            <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
+                        </p:selectOneRadio>
+                        <p:message for="sor_profundidade"/>
+                    </h:panelGrid>
+                    <p>
+                        <p:commandButton id="cb_selecionar_analises"
+                                         value="Selecionar Análises"  
+                                         update=":form_solicitacao:dt_analises_selection"
+                                         onclick="PF('dlg_analises').show()"/>
+                    </p>
+
+                    <hr/>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton id="cb_salvar_amostra" 
+                                         value="Adicionar"
+                                         action="#{solicitacaoBean.addAmostra()}"
+                                         process="@form"
+                                         update="@form, :form_solicitacao:lista_amostra"
+                                         onstart="PF('blockUIWidget').block()" 
+                                         oncomplete="PF('blockUIWidget').unblock()"/>
+                        <p:spinner id="quant" min="1" value="#{solicitacaoBean.quantidade}"/>
+                    </h:panelGrid>
+                    <br/>
+                </h:form>
+            </p:panel>
+        </div>
+
+        <div class="ui-grid-col-8">
+            <h:form id="lista_amostra">
+                <p:dataTable id="dt_solicitacao" 
+                             value="#{solicitacaoBean.solicitacao.amostraList}"
+                             var="amostra"
+                             paginator="true"
+                             rows="10"
+                             emptyMessage="sem registros">
+                    <f:facet name="header">
+                        Identificação de Análises Solicitadas
+                    </f:facet>
+
+                    <p:column headerText="+" width="30">
+                        <p:rowToggler />
+                    </p:column>
+
+                    <p:column headerText="Identificação da(s) Amostra(s)" width="90">
+                        <h:outputText value="#{amostra.codigo}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{amostra.tipo}"/>
+                    </p:column>
+
+                    <p:column headerText="Local">
+                        <h:outputText value="#{amostra.local.municipio} / #{amostra.local.estado}"/>
+                    </p:column>
+
+                    <p:column headerText="Relevo">
+                        <h:outputText value="#{amostra.relevo}"/>
+                    </p:column>
+
+                    <p:column headerText="Posição do Relevo">
+                        <h:outputText value="#{amostra.posicaoDoRelevo}"/>
+                    </p:column>
+
+                    <p:column headerText="Profundidade da Coleta">
+                        <h:outputText value="#{amostra.profundidade}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo de Cobertura">
+                        <h:outputText value="#{amostra.tipoDeCobertura}"/>
+                    </p:column>
+
+                    <p:column width="45" style="text-align: center">
+                        <p:commandButton id="cb_excluir_amostra"
+                                         icon="ui-icon-trash"
+                                         process="@this"
+                                         update="dt_solicitacao"
+                                         action="#{solicitacaoBean.removerAmostra()}">
+                            <p:confirm header="Confirmação" 
+                                       message="Você tem certeza?"
+                                       icon="ui-icon-alert"/>
+                            <f:setPropertyActionListener
+                                target="#{solicitacaoBean.amostra}"
+                                value="#{amostra}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column width="45" style="text-align: center">
+                        <p:commandButton id="cb_reaproveitar_amostra"
+                                         icon="ui-icon-arrowrefresh-1-s"
+                                         process="@this"
+                                         actionListener="#{solicitacaoBean.reaproveitarAmostra(amostra)}"
+                                         update=":form_solicitacao:form_amostra"
+                                         onstart="PF('blockUIWidget').block()" 
+                                         oncomplete="PF('blockUIWidget').unblock()"/>
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:dataTable id="idt_faturamento"
+                                     value="#{amostra.faturamentoList}"
+                                     var="f">
+                            <p:column headerText="Análise">
+                                <span>#{f.analise.nome}</span>
+                            </p:column>
+
+                            <p:column headerText="Preço">
+                                <h:outputText value="#{f.preco}">
+                                    <f:convertNumber type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+
+    <p:dialog widgetVar="dlg_analises" 
+              resizable="false" 
+              draggable="false" 
+              dynamic="true"
+              modal="true">
+        <p:dataTable id="dt_analises_selection" 
+                     selection="#{solicitacaoBean.selecionados}"
+                     scrollable="true"
+                     scrollHeight="400"
+                     rowKey="#{analise.id}"
+                     value="#{solicitacaoBean.analises}"
+                     var="analise">
+            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+            <p:column headerText="Análise">
+                <h:outputText value="#{analise.nome}"/>
+            </p:column>
+        </p:dataTable>
+        <br/>
+        <p:commandButton value="OK" onclick="PF('dlg_analises').hide()"/>
+    </p:dialog>
+
+    <p:confirmDialog global="true">
+        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
+    </p:confirmDialog>
+</html>
+

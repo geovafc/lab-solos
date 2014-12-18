@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/modelo/padrao.xhtml">
+        <ui:define name="conteudo">
+            <h:form id="solicitacao_consulta">
+                <pe:blockUI widgetVar="blockUIWidget" centerX="true" centerY="true">
+                    <h:panelGrid columns="1">
+                        <p:graphicImage library="imagem" name="ajax_loader.gif"/>
+                        <h:outputText value="Aguarde..."/>
+                    </h:panelGrid>
+                </pe:blockUI> 
+
+                <p:panel header="Consultar Solicitação">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4">
+                            <p:panel header="Filtro">
+                                <h:panelGrid columns="1">
+                                    <h:panelGrid columns="2">
+                                        <p:outputLabel value="Proprietário:" for="proprietario"/>
+                                        <p:autoComplete id="proprietario"
+                                                        size="40"
+                                                        value="#{solicitacaoConsultaBean.solicitacao.proprietario}"
+                                                        var="p"
+                                                        itemLabel="#{p.nome}"
+                                                        itemValue="#{p}"
+                                                        queryDelay="1090"
+                                                        dropdown="true"
+                                                        placeholder="Preencha o campo para fazer a busca"
+                                                        completeMethod="#{solicitacaoConsultaBean.autoComplete}"
+                                                        converter="proprietarioConverter"/>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2">
+                                        <p:outputLabel value="Procedência do Material:" for="procedencia_do_material"/>
+                                        <p:selectOneRadio id="procedencia_do_material"
+                                                          value="#{solicitacaoConsultaBean.solicitacao.procedenciaDoMaterial}">
+                                            <f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Particular" itemValue="Particular"/>
+                                            <f:selectItem itemLabel="Projeto*" itemValue="Projeto"/>
+                                            <f:selectItem itemLabel="Aula*" itemValue="Aula"/>
+                                        </p:selectOneRadio>    
+                                    </h:panelGrid>
+
+                                    <p:fieldset legend="Buscar Data de Entrada por Período">
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel value="Data de Entrada (Início):" for="entrada_inicio"/>
+                                            <p:calendar id="entrada_inicio"
+                                                        value="#{solicitacaoConsultaBean.entradaInicio}"
+                                                        mask="true"
+                                                        pattern="dd/MM/yyyy"
+                                                        locale="pt_BR"/>
+                                            <p:outputLabel value="Data de Entrada (Fim):" for="entrada_fim"/>
+                                            <p:calendar id="entrada_fim"
+                                                        value="#{solicitacaoConsultaBean.entradaFim}"
+                                                        mask="true"
+                                                        pattern="dd/MM/yyyy"
+                                                        locale="pt_BR"/>
+                                        </h:panelGrid>
+                                    </p:fieldset>
+
+                                    <p:fieldset legend="Buscar Data de Saída por Período">
+                                        <h:panelGrid columns="2">
+                                            <p:outputLabel value="Data de Saída (Início):" for="entrada_inicio"/>
+                                            <p:calendar id="saida_inicio"
+                                                        value="#{solicitacaoConsultaBean.saidaInicio}"
+                                                        mask="true"
+                                                        pattern="dd/MM/yyyy"
+                                                        locale="pt_BR"/>
+
+                                            <p:outputLabel value="Data de Saída (Fim):" for="saida_fim"/>
+                                            <p:calendar id="saida_fim"
+                                                        value="#{solicitacaoConsultaBean.saidaFim}"
+                                                        mask="true"
+                                                        pattern="dd/MM/yyyy"
+                                                        locale="pt_BR"/>
+                                        </h:panelGrid>
+                                    </p:fieldset>
+                                </h:panelGrid>
+                                <hr/>
+                                <p:commandButton id="buscar" value="Pesquisar" icon="ui-icon-search"
+                                                 update="dt_solicitacao" process="@form"
+                                                 onstart="PF('blockUIWidget').block()" 
+                                                 oncomplete="PF('blockUIWidget').unblock()"/>
+                            </p:panel>
+                        </div>
+
+                        <div class="ui-grid-col-8" style="padding: 5px">
+                            <br/>
+                            <pe:masterDetail id="mdt_solicitacao" level="#{solicitacaoConsultaBean.level}">
+                                <pe:masterDetailLevel level="1" levelLabel="Proprietários">
+                                    <p:dataTable id="dt_solicitacao"
+                                                 value="#{solicitacaoConsultaBean.solicitacoes}"
+                                                 var="s"
+                                                 emptyMessage="sem registros">
+                                        <p:column headerText="Proprietário">
+                                            <p:commandLink value="#{s.proprietario.nome}">
+                                                <pe:selectDetailLevel contextValue="#{s}"/>
+                                            </p:commandLink>
+                                        </p:column>
+
+                                        <p:column headerText="Procedência do Material">
+                                            <h:outputText value="#{s.procedenciaDoMaterial}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Entrada" width="150">
+                                            <h:outputText value="#{s.dataDeEntrada}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Saída" width="150">
+                                            <h:outputText value="#{s.dataDeSaida}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                </pe:masterDetailLevel>
+
+                                <pe:masterDetailLevel level="2" contextVar="s" levelLabel="Amostras">
+                                    <p:dataTable id="dt_amostras" value="#{s.amostraList}" var="amostra">
+                                        <p:subTable id="subt_faturamento"
+                                                    value="#{amostra.faturamentoList}"
+                                                    var="f">
+                                            <f:facet name="header">
+                                                <h:outputText value="Nº:#{amostra.codigo} / Tipo:#{amostra.tipo}"/>
+                                            </f:facet>
+
+                                            <p:column headerText="Análise">
+                                                <h:outputText value="#{f.analise.nome}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Preço">
+                                                <h:outputText value="#{f.preco}">
+                                                    <f:convertNumber type="currency"/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:subTable>
+                                    </p:dataTable>
+                                </pe:masterDetailLevel>
+                            </pe:masterDetail>
+                        </div>
+                    </div>
+                </p:panel>
+
+                <p:dialog widgetVar="dlg_amostra" resizable="false" draggable="false" modal="true">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Identificação da(s) Amostra(s):"/>
+                        <h:outputText value="#{amostra.codigo}"/>
+
+                        <h:outputText value="Tipo:"/>
+                        <h:outputText value="#{amostra.tipo}"/>
+
+                        <h:outputText value="Local:"/>
+                        <h:outputText value="#{amostra.local.municipio} / #{amostra.local.estado}"/>
+
+                        <h:outputText value="Relevo:"/>
+                        <h:outputText value="#{amostra.relevo}"/>
+
+                        <h:outputText value="Posição do Relevo:"/>
+                        <h:outputText value="#{amostra.posicaoDoRelevo}"/>
+
+                        <h:outputText value="Profundidade da Coleta:"/>
+                        <h:outputText value="#{amostra.profundidade}"/>
+
+                        <h:outputText value="Tipo de Cobertura:"/>
+                        <h:outputText value="#{amostra.tipoDeCobertura}"/>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -16,12 +16,12 @@ import br.edu.ufra.solos.rn.SolicitacaoRN;
 import br.edu.ufra.solos.util.JsfUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -38,18 +38,17 @@ public class SolicitacaoBean implements Serializable {
     private Solicitacao solicitacao = new Solicitacao();
     private Amostra amostra = new Amostra();
 
-    private DualListModel<Analise> dlmAnalises;
+    private List<Analise> selecionados = new ArrayList<>();
     private List<Solicitacao> solicitacoes;
     private List<Analise> analises;
-    
+
+    private int quantidade = 1;
     private int level = 1;
 
     @PostConstruct
     public void init() {
         gerarCodigo();
-        analises = daoA.obterTodos();
         solicitacao.setUsuario(daoU.obterTodos().get(0));
-        dlmAnalises = new DualListModel(analises, new ArrayList<>());
     }
 
     public String handleFlow(FlowEvent event) {
@@ -62,6 +61,11 @@ public class SolicitacaoBean implements Serializable {
 
     public void gerarCodigo() {
         amostra.setCodigo(rn.gerarCodigo());
+    }
+
+    public void calcular10DiasUteis() {
+        Date date = rn.calcular10DiasUteis(solicitacao.getDataDeEntrada());
+        solicitacao.setDataDeSaida(date);
     }
 
     public String salvar() {
@@ -85,28 +89,35 @@ public class SolicitacaoBean implements Serializable {
     }
 
     public void addAmostra() {
-        List<Faturamento> lista = rn.montarFaturamento(dlmAnalises.getTarget(), amostra);
+        List<Faturamento> lista = rn.montarFaturamento(selecionados, amostra);
         amostra.setFaturamentoList(lista);
         amostra.setSolicitacao(solicitacao);
-        solicitacao.getAmostraList().add(amostra);
-        rn.salvarNoContexto(amostra);
+        for (int i = 0; i < quantidade; i++) {
+            if (i != 0) {
+                reaproveitarAmostra(amostra);
+            }
+            solicitacao.getAmostraList().add(amostra);
+            rn.salvarNoContexto(amostra);
+        }
         amostra = new Amostra();
+        selecionados = new ArrayList<>();
         gerarCodigo();
     }
 
     public void removerAmostra() {
-        solicitacao.getAmostraList().remove(amostra);
+        solicitacao.getAmostraList().removeIf((Amostra t) -> t.getCodigo().equals(amostra.getCodigo()));
         rn.removerDoContexto(amostra);
         amostra = new Amostra();
         gerarCodigo();
     }
 
-    public DualListModel<Analise> getDlmAnalises() {
-        return dlmAnalises;
-    }
-
-    public void setDlmAnalises(DualListModel<Analise> dlmAnalises) {
-        this.dlmAnalises = dlmAnalises;
+    public void reaproveitarAmostra(Amostra amostra) {
+        System.out.println(amostra.getFaturamentoList());
+        this.amostra = rn.reaproveitarAmostra(amostra);
+        selecionados.clear();
+        for (Faturamento f : amostra.getFaturamentoList()) {
+            selecionados.add(f.getAnalise());
+        }
     }
 
     public List<Solicitacao> getSolicitacoes() {
@@ -130,12 +141,33 @@ public class SolicitacaoBean implements Serializable {
         this.amostra = amostra;
     }
 
+    public List<Analise> getSelecionados() {
+        return selecionados;
+    }
+
+    public List<Analise> getAnalises() {
+        analises = rn.filtrarPorTipoDeAmostra(daoA.obterTodos(), amostra.getTipo());
+        return analises;
+    }
+
+    public void setSelecionados(List<Analise> selecionados) {
+        this.selecionados = selecionados;
+    }
+
     public int getLevel() {
         return level;
     }
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
 }
