@@ -5,7 +5,11 @@
     <h:form id="formMenu">
         <p:menubar id="menubar">
             <p:menuitem id="mi_home" icon="ui-icon-home" value="Home" outcome="index"/>
-            <p:menuitem id="mi_deposito" value="Solicitar Análise" icon="ui-icon-document" outcome="lista_solicitacao"/>
+            <p:submenu label="Solicitação">
+                <p:menuitem value="Realizar Solicitação" outcome="form_solicitacao"/>
+                <p:menuitem value="Consultar Solicitação" outcome="/secretaria/solicitacao/consultar_solicitacao.jsf"/>
+                <p:menuitem value="Agenda"/>
+            </p:submenu>
 
             <p:submenu id="sm_cadastrar" label="Cadastrar">
                 <p:menuitem id="mi_analise" value="Análise" outcome="lista_analise"/>

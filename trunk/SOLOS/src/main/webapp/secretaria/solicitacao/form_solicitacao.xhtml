@@ -15,7 +15,7 @@
                           flowListener="#{solicitacaoBean.handleFlow}">
                     <p:tab id="solicitacao" title="Solicitação">
                         <p:panel>
-
+                            
                             <h:panelGrid columns="3">
                                 <label for="ac_prop">Proprietário: </label>
                                 <p:autoComplete id="ac_prop"
@@ -51,7 +51,9 @@
                                             pattern="dd/MM/yyyy"
                                             locale="pt_BR"
                                             required="true"
-                                            requiredMessage="Campo Obrigatório"/>
+                                            requiredMessage="Campo Obrigatório">
+                                    <p:ajax event="dateSelect" listener="#{solicitacaoBean.calcular10DiasUteis()}" update="cl_saida"/>
+                                </p:calendar>
                                 <p:message id="msg_entrada" for="cl_entrada"/>
 
                                 <label for="cl_saida">Data de Saída:</label>
@@ -79,196 +81,7 @@
                     </p:tab>
 
                     <p:tab id="amostra" title="Amostra">
-                        <p:panel>
-                            <h:form id="form_amostra">
-                                <h:panelGrid columns="3" cellpadding="4">
-
-                                    <label>Código:</label>
-                                    <p:inputText id="it_codigo"
-                                                 value="#{solicitacaoBean.amostra.codigo}"
-                                                 size="20"
-                                                 required="true"
-                                                 requiredMessage="Campo Obrigatório"
-                                                 disabled="true"/>
-                                    <p:commandButton id="cb_gerar_cod" 
-                                                     value="Gerar Código">
-                                        <p:ajax update="it_codigo" listener="#{solicitacaoBean.gerarCodigo()}"/>
-                                    </p:commandButton>
-
-                                    <label for="som_local">Local:</label>
-                                    <p:selectOneMenu id="som_local"
-                                                     value="#{solicitacaoBean.amostra.local}"
-                                                     var="local"
-                                                     required="true"
-                                                     requiredMessage="Campo Obrigatório"
-                                                     converter="localConverter">
-                                        <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-                                        <f:selectItems value="#{localBean.locais}"
-                                                       var="l"
-                                                       itemLabel="#{l.municipio}"
-                                                       itemValue="#{l}"/>
-
-                                        <p:column>
-                                            <span>#{local.municipio}</span>
-                                        </p:column>
-
-                                        <p:column>
-                                            <span>#{local.estado}</span>
-                                        </p:column>
-                                    </p:selectOneMenu>
-                                    <p:message id="msg_local" for="som_local"/>
-
-                                    <label for="it_cobertura">Tipo de Cobertura do Solo:</label>
-                                    <p:inputText id="it_cobertura" 
-                                                 value="#{solicitacaoBean.amostra.tipoDeCobertura}"/>
-                                    <span></span>
-                                </h:panelGrid>
-
-                                <h:panelGrid columns="3" cellpadding="4">
-                                    <label>Tipo:</label>
-                                    <p:selectOneRadio id="sor_tipo"
-                                                      value="#{solicitacaoBean.amostra.tipo}"
-                                                      required="true"
-                                                      requiredMessage="Campo Obrigatório">
-                                        <f:selectItem itemLabel="Solo" itemValue="Solo"/>
-                                        <f:selectItem itemLabel="Planta" itemValue="Planta"/>
-                                    </p:selectOneRadio>
-                                    <p:message id="msg_tipo" for="sor_tipo"/>
-
-                                    <label>Área:</label>
-                                    <p:selectOneRadio id="sor_area"
-                                                      value="#{solicitacaoBean.amostra.area}">
-                                        <f:selectItem itemLabel="Terra Firme" itemValue="Terra Firme"/>
-                                        <f:selectItem itemLabel="Várzea" itemValue="Várzea"/>
-                                        <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
-                                    </p:selectOneRadio>
-                                    <p:inputText id="outros_area" 
-                                                 widgetVar="outros_area"/>
-
-                                    <label>Relevo:</label>
-                                    <p:selectOneRadio id="sor_relevo"
-                                                      value="#{solicitacaoBean.amostra.relevo}">
-                                        <f:selectItem itemLabel="Ondulado" itemValue="Ondulado"/>
-                                        <f:selectItem itemLabel="Suave Ondulado" itemValue="Suave Ondulado"/>
-                                        <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
-                                    </p:selectOneRadio>
-                                    <p:inputText id="outros_relevo" 
-                                                 widgetVar="outros_relevo">
-                                    </p:inputText>
-
-                                    <label>Posição no Relevo:</label>
-                                    <p:selectOneRadio id="sor_pos_relevo"
-                                                      value="#{solicitacaoBean.amostra.posicaoDoRelevo}">
-                                        <f:selectItem itemLabel="Encosta" itemValue="Encosta"/>
-                                        <f:selectItem itemLabel="Baixada" itemValue="Baixada"/>
-                                        <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
-                                    </p:selectOneRadio>
-                                    <p:inputText id="outros_pos_relevo" 
-                                                 widgetVar="outros_pos_relevo"/>
-
-                                    <label>Profundidade da Coleta:</label>
-                                    <p:selectOneRadio id="sor_profundidade"
-                                                      value="#{solicitacaoBean.amostra.profundidade}">
-                                        <f:selectItem itemLabel="0 a 20cm" itemValue="0 a 20cm"/>
-                                        <f:selectItem itemLabel="20 a 40cm" itemValue="20 a 40cm"/>
-                                        <f:selectItem itemLabel="40 a 60cm" itemValue="40 a 60cm"/>
-                                        <f:selectItem itemLabel="Outros" itemValue="Outros" noSelectionOption="true"/>
-                                    </p:selectOneRadio>
-                                    <p:inputText id="outros_profundidade" 
-                                                 widgetVar="outros_profundidade"/>
-                                </h:panelGrid>
-
-                                <br/>
-
-                                <p:pickList id="pl_analises" 
-                                            value="#{solicitacaoBean.dlmAnalises}"
-                                            var="analise"
-                                            itemLabel="#{analise.nome}"
-                                            itemValue="#{analise}"
-                                            required="true"
-                                            requiredMessage="É necessário selecionar pelo menos uma análise"
-                                            converter="analiseConverter"/>
-
-                                <p>
-                                    <p:commandButton id="cb_salvar_amostra"
-                                                     value="Adicionar"
-                                                     action="#{solicitacaoBean.addAmostra()}"
-                                                     process="@form"
-                                                     update="@form, :form_solicitacao:lista_amostra"/>
-                                </p>
-                            </h:form>
-
-                            <h:form id="lista_amostra">
-                                <p:dataTable id="dt_solicitacao" 
-                                             value="#{solicitacaoBean.solicitacao.amostraList}"
-                                             var="amostra"
-                                             emptyMessage="sem registros">
-                                    <f:facet name="header">
-                                        Identificação de Análises Solicitadas
-                                    </f:facet>
-
-                                    <p:column headerText="+" width="50">
-                                        <p:rowToggler />
-                                    </p:column>
-
-                                    <p:column headerText="Identificação da(s) Amostra(s)" width="90">
-                                        <span>#{amostra.codigo}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Tipo">
-                                        <span>#{amostra.tipo}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Local">
-                                        <span>#{amostra.local.municipio} / #{amostra.local.estado}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Relevo">
-                                        <span>#{amostra.relevo}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Posição do Relevo">
-                                        <span>#{amostra.posicaoDoRelevo}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Profundidade da Coleta">
-                                        <span>#{amostra.profundidade}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Tipo de Cobertura">
-                                        <span>#{amostra.tipoDeCobertura}</span>
-                                    </p:column>
-
-                                    <p:column headerText="Excluir" width="55">
-                                        <p:commandButton id="cb_excluir_amostra"
-                                                         icon="ui-icon-trash"
-                                                         process="@form"
-                                                         update="@form"
-                                                         action="#{solicitacaoBean.removerAmostra()}">
-                                            <f:setPropertyActionListener
-                                                target="#{solicitacaoBean.amostra}"
-                                                value="#{amostra}"/>
-                                        </p:commandButton>
-                                    </p:column>
-
-                                    <p:rowExpansion>
-                                        <p:dataTable id="idt_faturamento"
-                                                     value="#{amostra.faturamentoList}"
-                                                     var="f">
-                                            <p:column headerText="Análise">
-                                                <span>#{f.analise.nome}</span>
-                                            </p:column>
-
-                                            <p:column headerText="Preço">
-                                                <h:outputText value="#{f.preco}">
-                                                    <f:convertNumber type="currency"/>
-                                                </h:outputText>
-                                            </p:column>
-                                        </p:dataTable>
-                                    </p:rowExpansion>
-                                </p:dataTable>
-                            </h:form>
-                        </p:panel>
+                        <ui:include src="/secretaria/solicitacao/etapa_deposito_de_amostras.xhtml"/>
                     </p:tab>
 
                     <p:tab id="faturamento" title="Faturamento">
@@ -370,6 +183,7 @@
                                          action="#{solicitacaoBean.salvar()}"/>
                     </p:tab>
                 </p:wizard>
+
 
                 <br/>
                 <br/>

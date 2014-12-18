@@ -6,14 +6,17 @@
 package br.edu.ufra.solos.rn;
 
 import br.edu.ufra.solos.dao.DAOException;
-import br.edu.ufra.solos.dao.DAOFactory;
-import br.edu.ufra.solos.dao.GenericDAO;
+import br.edu.ufra.solos.dao.SolicitacaoDAO;
 import br.edu.ufra.solos.entidade.Amostra;
 import br.edu.ufra.solos.entidade.Analise;
 import br.edu.ufra.solos.entidade.Faturamento;
 import br.edu.ufra.solos.entidade.Solicitacao;
+import br.edu.ufra.solos.util.DateUtil;
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +26,7 @@ import java.util.List;
  */
 public class SolicitacaoRN implements Serializable {
 
-    private final GenericDAO<Solicitacao> dao = DAOFactory.criarGenericDAO(Solicitacao.class);
+    private final SolicitacaoDAO dao = new SolicitacaoDAO();
 
     public void salvar(Solicitacao entidade) throws DAOException {
         dao.salvar(entidade);
@@ -53,13 +56,52 @@ public class SolicitacaoRN implements Serializable {
         return lista;
     }
 
+    public Amostra reaproveitarAmostra(Amostra amostra) {
+        Amostra clonada = new Amostra();
+        clonada.setCodigo(gerarCodigo());
+        clonada.setArea(amostra.getArea());
+        clonada.setLocal(amostra.getLocal());
+        clonada.setPosicaoDoRelevo(amostra.getPosicaoDoRelevo());
+        clonada.setProfundidade(amostra.getProfundidade());
+        clonada.setRelevo(amostra.getRelevo());
+        clonada.setTipoDeCobertura(amostra.getTipoDeCobertura());
+        clonada.setTipo(amostra.getTipo());
+        clonada.setSolicitacao(amostra.getSolicitacao());
+        clonada.setFaturamentoList(amostra.getFaturamentoList());
+        return clonada;
+    }
+    
+    public List<Analise> filtrarPorTipoDeAmostra(List<Analise> analises, String tipo) {
+        if (analises == null || tipo == null) return Collections.EMPTY_LIST;
+        List<Analise> filtrada = new ArrayList<>();
+        for (Analise analise : analises) {
+            if (analise.getTipo().equals(tipo)) {
+                filtrada.add(analise);
+            }
+        }
+        return filtrada;
+    }
+
     public String gerarCodigo() {
-        int aleatorio = (int)(Math.random() * 1000);
+        int aleatorio = (int) (Math.random() * 1000);
         int ano = new Date().getYear();
         return "A" + aleatorio + "" + ano;
     }
-    
-    
+
+    public Date calcular10DiasUteis(Date inicio) {
+        LocalDateTime inicioLD = DateUtil.converterDateToLocalDateTime(inicio);
+        final int DIAS_UTEIS = 10;
+        int ct = 0;
+        while (ct != DIAS_UTEIS) {
+            inicioLD = inicioLD.plusDays(1);
+            DayOfWeek atual = inicioLD.getDayOfWeek();
+            if (!(atual == DayOfWeek.SUNDAY || atual == DayOfWeek.SATURDAY)) {
+                ct++;
+            }
+        }
+        return DateUtil.converterLocalDateTimeToDate(inicioLD);
+    }
+
     public Solicitacao obter(Object id) {
         return dao.obter(id);
     }
