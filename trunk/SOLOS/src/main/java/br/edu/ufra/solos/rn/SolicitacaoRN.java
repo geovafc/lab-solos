@@ -67,7 +67,15 @@ public class SolicitacaoRN implements Serializable {
         clonada.setTipoDeCobertura(amostra.getTipoDeCobertura());
         clonada.setTipo(amostra.getTipo());
         clonada.setSolicitacao(amostra.getSolicitacao());
-        clonada.setFaturamentoList(amostra.getFaturamentoList());
+        for (Faturamento f : amostra.getFaturamentoList()) {
+            Faturamento fClonado = new Faturamento();
+            fClonado.setAmostra(clonada);
+            fClonado.setAnalise(f.getAnalise());
+            fClonado.setPreco(f.getPreco());
+            fClonado.setValorDeDesconto(f.getValorDeDesconto());
+            fClonado.setTipoDeDesconto(f.getTipoDeDesconto());
+            clonada.getFaturamentoList().add(fClonado);
+        }
         return clonada;
     }
     
@@ -85,7 +93,7 @@ public class SolicitacaoRN implements Serializable {
     public String gerarCodigo() {
         int aleatorio = (int) (Math.random() * 1000);
         int ano = new Date().getYear();
-        return "A" + aleatorio + "" + ano;
+        return aleatorio + "" + ano;
     }
 
     public Date calcular10DiasUteis(Date inicio) {

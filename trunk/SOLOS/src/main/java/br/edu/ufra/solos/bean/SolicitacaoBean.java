@@ -10,6 +10,7 @@ import br.edu.ufra.solos.dao.GenericDAO;
 import br.edu.ufra.solos.entidade.Amostra;
 import br.edu.ufra.solos.entidade.Analise;
 import br.edu.ufra.solos.entidade.Faturamento;
+import br.edu.ufra.solos.entidade.Local;
 import br.edu.ufra.solos.entidade.Solicitacao;
 import br.edu.ufra.solos.entidade.Usuario;
 import br.edu.ufra.solos.rn.SolicitacaoRN;
@@ -34,12 +35,13 @@ public class SolicitacaoBean implements Serializable {
     private final SolicitacaoRN rn = new SolicitacaoRN();
     private final GenericDAO<Analise> daoA = DAOFactory.criarGenericDAO(Analise.class);
     private final GenericDAO<Usuario> daoU = DAOFactory.criarGenericDAO(Usuario.class);
+    private final GenericDAO<Local> daoL = DAOFactory.criarGenericDAO(Local.class);
 
     private Solicitacao solicitacao = new Solicitacao();
     private Amostra amostra = new Amostra();
 
     private List<Analise> selecionados = new ArrayList<>();
-    private List<Solicitacao> solicitacoes;
+    private List<Local> locais;
     private List<Analise> analises;
 
     private int quantidade = 1;
@@ -89,13 +91,13 @@ public class SolicitacaoBean implements Serializable {
     }
 
     public void addAmostra() {
-        List<Faturamento> lista = rn.montarFaturamento(selecionados, amostra);
-        amostra.setFaturamentoList(lista);
-        amostra.setSolicitacao(solicitacao);
-        for (int i = 0; i < quantidade; i++) {
-            if (i != 0) {
-                reaproveitarAmostra(amostra);
-            }
+            List<Faturamento> lista = rn.montarFaturamento(selecionados, amostra);
+            amostra.setFaturamentoList(lista);
+            amostra.setSolicitacao(solicitacao);
+            solicitacao.getAmostraList().add(amostra);
+            rn.salvarNoContexto(amostra);
+        for (int i = 1; i < quantidade; i++) {
+            reaproveitarAmostra(amostra);
             solicitacao.getAmostraList().add(amostra);
             rn.salvarNoContexto(amostra);
         }
@@ -112,7 +114,6 @@ public class SolicitacaoBean implements Serializable {
     }
 
     public void reaproveitarAmostra(Amostra amostra) {
-        System.out.println(amostra.getFaturamentoList());
         this.amostra = rn.reaproveitarAmostra(amostra);
         selecionados.clear();
         for (Faturamento f : amostra.getFaturamentoList()) {
@@ -120,9 +121,11 @@ public class SolicitacaoBean implements Serializable {
         }
     }
 
-    public List<Solicitacao> getSolicitacoes() {
-        solicitacoes = rn.obterTodos();
-        return solicitacoes;
+    public List<Local> getLocais() {
+        if (locais == null) {
+            locais = daoL.obterTodos();
+        }
+        return locais;
     }
 
     public Solicitacao getSolicitacao() {

@@ -27,7 +27,8 @@ public class SolicitacaoConsultaBean implements Serializable {
     private final SolicitacaoDAO dao = new SolicitacaoDAO();
 
     private List<Solicitacao> solicitacoes;
-    private Solicitacao solicitacao = new Solicitacao();
+    private Proprietario proprietario;
+    private String procedenciaDoMaterial;
     private Date entradaInicio;
     private Date entradaFim;
     private Date saidaInicio;
@@ -40,17 +41,25 @@ public class SolicitacaoConsultaBean implements Serializable {
     }
 
     public List<Solicitacao> getSolicitacoes() {
-        solicitacoes = dao.filtroSolicitacao(solicitacao.getProprietario(), solicitacao.getProcedenciaDoMaterial(),
+        solicitacoes = dao.filtroSolicitacao(proprietario, procedenciaDoMaterial,
                 entradaInicio, entradaFim, saidaInicio, saidaFim);
         return solicitacoes;
     }
 
-    public Solicitacao getSolicitacao() {
-        return solicitacao;
+    public Proprietario getProprietario() {
+        return proprietario;
     }
 
-    public void setSolicitacao(Solicitacao solicitacao) {
-        this.solicitacao = solicitacao;
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
+    }
+
+    public String getProcedenciaDoMaterial() {
+        return procedenciaDoMaterial;
+    }
+
+    public void setProcedenciaDoMaterial(String procendenciaDoMaterial) {
+        this.procedenciaDoMaterial = procendenciaDoMaterial;
     }
 
     public Date getEntradaInicio() {

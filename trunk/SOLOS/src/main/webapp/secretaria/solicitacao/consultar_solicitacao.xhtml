@@ -25,7 +25,7 @@
                                         <p:outputLabel value="Proprietário:" for="proprietario"/>
                                         <p:autoComplete id="proprietario"
                                                         size="40"
-                                                        value="#{solicitacaoConsultaBean.solicitacao.proprietario}"
+                                                        value="#{solicitacaoConsultaBean.proprietario}"
                                                         var="p"
                                                         itemLabel="#{p.nome}"
                                                         itemValue="#{p}"
@@ -39,8 +39,8 @@
                                     <h:panelGrid columns="2">
                                         <p:outputLabel value="Procedência do Material:" for="procedencia_do_material"/>
                                         <p:selectOneRadio id="procedencia_do_material"
-                                                          value="#{solicitacaoConsultaBean.solicitacao.procedenciaDoMaterial}">
-                                            <f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+                                                          value="#{solicitacaoConsultaBean.procedenciaDoMaterial}">
+                                            <f:selectItem itemLabel="Sem" itemValue="#{null}"/>
                                             <f:selectItem itemLabel="Particular" itemValue="Particular"/>
                                             <f:selectItem itemLabel="Projeto*" itemValue="Projeto"/>
                                             <f:selectItem itemLabel="Aula*" itemValue="Aula"/>
@@ -87,6 +87,7 @@
                                                  update="dt_solicitacao" process="@form"
                                                  onstart="PF('blockUIWidget').block()" 
                                                  oncomplete="PF('blockUIWidget').unblock()"/>
+                                <p:commandButton id="limpar" type="reset" value="Limpar"/>
                             </p:panel>
                         </div>
 
@@ -125,7 +126,17 @@
                                 </pe:masterDetailLevel>
 
                                 <pe:masterDetailLevel level="2" contextVar="s" levelLabel="Amostras">
-                                    <p:dataTable id="dt_amostras" value="#{s.amostraList}" var="amostra">
+                                    <p:dataTable id="dt_amostras" 
+                                                 value="#{s.amostraList}" 
+                                                 var="amostra"
+                                                 emptyMessage="sem registros">
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column headerText="Análise"/>
+                                                <p:column headerText="Preço"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
                                         <p:subTable id="subt_faturamento"
                                                     value="#{amostra.faturamentoList}"
                                                     var="f">
@@ -133,11 +144,11 @@
                                                 <h:outputText value="Nº:#{amostra.codigo} / Tipo:#{amostra.tipo}"/>
                                             </f:facet>
 
-                                            <p:column headerText="Análise">
+                                            <p:column>
                                                 <h:outputText value="#{f.analise.nome}"/>
                                             </p:column>
 
-                                            <p:column headerText="Preço">
+                                            <p:column>
                                                 <h:outputText value="#{f.preco}">
                                                     <f:convertNumber type="currency"/>
                                                 </h:outputText>
@@ -149,32 +160,8 @@
                         </div>
                     </div>
                 </p:panel>
-
-                <p:dialog widgetVar="dlg_amostra" resizable="false" draggable="false" modal="true">
-                    <p:panelGrid columns="2">
-                        <h:outputText value="Identificação da(s) Amostra(s):"/>
-                        <h:outputText value="#{amostra.codigo}"/>
-
-                        <h:outputText value="Tipo:"/>
-                        <h:outputText value="#{amostra.tipo}"/>
-
-                        <h:outputText value="Local:"/>
-                        <h:outputText value="#{amostra.local.municipio} / #{amostra.local.estado}"/>
-
-                        <h:outputText value="Relevo:"/>
-                        <h:outputText value="#{amostra.relevo}"/>
-
-                        <h:outputText value="Posição do Relevo:"/>
-                        <h:outputText value="#{amostra.posicaoDoRelevo}"/>
-
-                        <h:outputText value="Profundidade da Coleta:"/>
-                        <h:outputText value="#{amostra.profundidade}"/>
-
-                        <h:outputText value="Tipo de Cobertura:"/>
-                        <h:outputText value="#{amostra.tipoDeCobertura}"/>
-                    </p:panelGrid>
-                </p:dialog>
             </h:form>
+            <br/><br/>
         </ui:define>
     </ui:composition>
 </html>
