@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Amostra.findByRelevo", query = "SELECT a FROM Amostra a WHERE a.relevo = :relevo"),
     @NamedQuery(name = "Amostra.findByTipo", query = "SELECT a FROM Amostra a WHERE a.tipo = :tipo"),
     @NamedQuery(name = "Amostra.findByTipoDeCobertura", query = "SELECT a FROM Amostra a WHERE a.tipoDeCobertura = :tipoDeCobertura")})
-public class Amostra implements Serializable {
+public class Amostra implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -195,6 +195,11 @@ public class Amostra implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override

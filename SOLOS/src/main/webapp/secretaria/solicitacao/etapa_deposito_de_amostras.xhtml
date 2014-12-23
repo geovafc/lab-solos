@@ -18,7 +18,6 @@
                     </pe:blockUI> 
 
                     <h:panelGrid columns="3">
-
                         <label for="it_cobertura">Tipo de Cobertura do Solo:</label>
                         <p:inputText id="it_cobertura" 
                                      value="#{solicitacaoBean.amostra.tipoDeCobertura}"/>
@@ -32,7 +31,7 @@
                                          requiredMessage="Campo Obrigatório"
                                          converter="localConverter">
                             <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
-                            <f:selectItems value="#{localBean.locais}"
+                            <f:selectItems value="#{solicitacaoBean.locais}"
                                            var="l"
                                            itemLabel="#{l.municipio}"
                                            itemValue="#{l}"/>
@@ -125,45 +124,67 @@
                              value="#{solicitacaoBean.solicitacao.amostraList}"
                              var="amostra"
                              paginator="true"
-                             rows="10"
+                             rows="5"
+                             expandedRow="true"
+                             style="font-size: 12px"
                              emptyMessage="sem registros">
                     <f:facet name="header">
                         Identificação de Análises Solicitadas
                     </f:facet>
 
-                    <p:column headerText="+" width="30">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="+" width="15"/>
+                            <p:column headerText="Identificação da(s) Amostra(s)"/>
+                            <p:column headerText="Tipo de Cobertura"/>
+                            <p:column headerText="Local"/>
+                            <p:column headerText="Tipo"/>
+                            <p:column headerText="Area"/>
+                            <p:column headerText="Relevo"/>
+                            <p:column headerText="Posição do Relevo"/>
+                            <p:column headerText="Profundidade da Coleta"/>
+                            <p:column width="45" style="text-align: center"/>
+                            <p:column width="45" style="text-align: center"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
                         <p:rowToggler />
                     </p:column>
 
-                    <p:column headerText="Identificação da(s) Amostra(s)" width="90">
+                    <p:column>
                         <h:outputText value="#{amostra.codigo}"/>
                     </p:column>
 
-                    <p:column headerText="Tipo">
-                        <h:outputText value="#{amostra.tipo}"/>
-                    </p:column>
-
-                    <p:column headerText="Local">
-                        <h:outputText value="#{amostra.local.municipio} / #{amostra.local.estado}"/>
-                    </p:column>
-
-                    <p:column headerText="Relevo">
-                        <h:outputText value="#{amostra.relevo}"/>
-                    </p:column>
-
-                    <p:column headerText="Posição do Relevo">
-                        <h:outputText value="#{amostra.posicaoDoRelevo}"/>
-                    </p:column>
-
-                    <p:column headerText="Profundidade da Coleta">
-                        <h:outputText value="#{amostra.profundidade}"/>
-                    </p:column>
-
-                    <p:column headerText="Tipo de Cobertura">
+                    <p:column>
                         <h:outputText value="#{amostra.tipoDeCobertura}"/>
                     </p:column>
 
-                    <p:column width="45" style="text-align: center">
+                    <p:column>
+                        <h:outputText value="#{amostra.local.municipio} / #{amostra.local.estado}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <h:outputText value="#{amostra.tipo}"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{amostra.area}"/>
+                    </p:column>
+                    
+                    <p:column>
+                        <h:outputText value="#{amostra.relevo}"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{amostra.posicaoDoRelevo}"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{amostra.profundidade}"/>
+                    </p:column>
+
+                    <p:column>
                         <p:commandButton id="cb_excluir_amostra"
                                          icon="ui-icon-trash"
                                          process="@this"
@@ -178,7 +199,7 @@
                         </p:commandButton>
                     </p:column>
 
-                    <p:column width="45" style="text-align: center">
+                    <p:column>
                         <p:commandButton id="cb_reaproveitar_amostra"
                                          icon="ui-icon-arrowrefresh-1-s"
                                          process="@this"
@@ -192,11 +213,11 @@
                         <p:dataTable id="idt_faturamento"
                                      value="#{amostra.faturamentoList}"
                                      var="f">
-                            <p:column headerText="Análise">
+                            <p:column>
                                 <span>#{f.analise.nome}</span>
                             </p:column>
 
-                            <p:column headerText="Preço">
+                            <p:column>
                                 <h:outputText value="#{f.preco}">
                                     <f:convertNumber type="currency"/>
                                 </h:outputText>
@@ -219,7 +240,8 @@
                      scrollHeight="400"
                      rowKey="#{analise.id}"
                      value="#{solicitacaoBean.analises}"
-                     var="analise">
+                     var="analise"
+                     emptyMessage="sem registros">
             <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
             <p:column headerText="Análise">
