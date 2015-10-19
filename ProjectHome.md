@@ -1,0 +1,1 @@
+O sistema tem como fundamento controlar os depósitos de amostras de solos ou plantas, fazer controle financeiro e disponibilizar resultados de análise das amostras de solos ou plantas.
